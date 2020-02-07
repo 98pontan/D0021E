@@ -1,4 +1,5 @@
 package Sim;
+import Sim.LossyLink;
 
 // An example of how to build a topology and starting the simulation engine
 
@@ -6,8 +7,8 @@ public class Run {
 	public static void main (String [] args)
 	{
  		//Creates two links
- 		Link link1 = new Lossylink(1, 1, 30);
-		Link link2 = new Lossylink(10, 10, 70);
+ 		Link link1 = new LossyLink(50, 10, 0.08);
+		Link link2 = new LossyLink(50, 10, 0.00);
 		
 		// Create two end hosts that will be
 		// communicating via the router
@@ -29,9 +30,9 @@ public class Run {
 		
 		// Generate some traffic
 		// host1 will send 20 messages with time interval 5 to network 2, node 1. Sequence starts with number 1
-		host1.StartSending(2, 2, 20, 5, 1); 
+		host1.StartSending(2, 2, 1000, 5, 1);
 		// host2 will send 30 messages with time interval 7 to network 1, node 1. Sequence starts with number 10
-		host2.StartSending(1, 1, 30, 7, 10); 
+		//host2.StartSending(1, 1, 30, 7, 10);
 		
 		// Start the simulation engine and of we go!
 		Thread t=new Thread(SimEngine.instance());
@@ -40,13 +41,18 @@ public class Run {
 		try
 		{
 			t.join();
+			System.out.println("Link 1 average delays: " + ((LossyLink) link1).averageDelay());
+			System.out.println("Link 1 average delays: " + ((LossyLink) link1).averageDelay());
+			System.out.println("Link 1 delays: " + ((LossyLink) link1).delays.size());
+//			for (int i = 0; i < ((LossyLink) link1).delays.size(); i++) {
+//				System.out.println(((LossyLink) link1).delays.get(i));
+//			}
+			System.out.println("Link 1 dropped packages: " + ((LossyLink) link1).droppedPackages);
 		}
 		catch (Exception e)
 		{
 			System.out.println("The motor seems to have a problem, time for service?");
-		}		
-
-
+		}
 
 	}
 }
