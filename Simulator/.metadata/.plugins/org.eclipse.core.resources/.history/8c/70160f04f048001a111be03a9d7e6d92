@@ -4,14 +4,14 @@ import java.util.Random;
 
 
 // Setting up a Class with delay, jitter, drop and a random value.
-public class Lossylink extends Link {
+public class LossyLink extends Link {
     private int delay = 0;    // average delay in ms
     private int jitter = 0;   // jitter in ms
     private double drop = 0;     // probability to drop a package between 0.0-1-0
     private double nextDelay = 0; //
     Random rand = new Random();
 
-    public Lossylink(int delay, int jitter, double drop) {
+    public LossyLink(int delay, int jitter, double drop) {
         super();
         this.jitter = jitter;
         this.delay = delay;
