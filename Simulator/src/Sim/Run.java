@@ -7,7 +7,7 @@ public class Run {
 	public static void main (String [] args)
 	{
  		//Creates two links
- 		Link link1 = new LossyLink(50, 10, 0.08);
+ 		Link link1 = new LossyLink(50, 5, 0.08);
 		Link link2 = new LossyLink(50, 10, 0.00);
 		
 		// Create two end hosts that will be
@@ -44,9 +44,9 @@ public class Run {
 			System.out.println("Link 1 average delays: " + ((LossyLink) link1).averageDelay());
 			System.out.println("Link 1 average delays: " + ((LossyLink) link1).averageDelay());
 			System.out.println("Link 1 delays: " + ((LossyLink) link1).delays.size());
-//			for (int i = 0; i < ((LossyLink) link1).delays.size(); i++) {
-//				System.out.println(((LossyLink) link1).delays.get(i));
-//			}
+			for (int i = 0; i < ((LossyLink) link1).delays.size(); i++) {
+				System.out.println(((LossyLink) link1).delays.get(i));
+			}
 			System.out.println("Link 1 dropped packages: " + ((LossyLink) link1).droppedPackages);
 		}
 		catch (Exception e)
