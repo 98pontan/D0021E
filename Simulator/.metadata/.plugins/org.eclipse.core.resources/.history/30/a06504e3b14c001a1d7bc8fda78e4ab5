@@ -1,0 +1,14 @@
+package Sim;
+
+public class Generator_CBR extends Node {
+	private double time = 0;
+	private int _id;
+	_stopSendingAfter = number;
+
+	public Generator_CBR(int network, int node) {
+		super(network, node);
+		// TODO Auto-generated constructor stub
+		_id = new NetworkAddr(network, node);
+	}
+
+}

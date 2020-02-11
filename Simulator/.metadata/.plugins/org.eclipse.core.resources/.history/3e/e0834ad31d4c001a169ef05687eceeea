@@ -1,0 +1,11 @@
+package Sim;
+
+public class Generator_CBR extends Node {
+	
+
+	public Generator_CBR(int network, int node) {
+		super(network, node);
+		// TODO Auto-generated constructor stub
+	}
+
+}

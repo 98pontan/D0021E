@@ -5,9 +5,9 @@ package Sim;
 
 public class Node extends SimEnt {
 	private NetworkAddr _id;
-	private SimEnt _peer;
-	private int _sentmsg=0;
-	private int _seq = 0;
+	protected SimEnt _peer;
+	protected int _sentmsg=0;
+	protected int _seq = 0;
 
 	
 	public Node (int network, int node)
@@ -34,7 +34,7 @@ public class Node extends SimEnt {
 	{
 		return _id;
 	}
-	
+
 //**********************************************************************************	
 	// Just implemented to generate some traffic for demo.
 	// In one of the labs you will create some traffic generators
