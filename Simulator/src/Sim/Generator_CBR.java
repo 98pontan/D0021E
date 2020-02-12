@@ -1,28 +1,26 @@
 package Sim;
 
 public class Generator_CBR extends Node {
-	private double time = 0;
-	private NetworkAddr _id;
-	private int _stopSendingAfter = 0;
-	private int _timeBetweenSending = 10; //time between messages
-	private int _toNetwork = 0;
-	private int _toHost = 0;
+	private double _time = 0; // 
+	protected int _packets_per_second; // Number of packets per second
+	private int _stopSendingAfter = 0; // Number of packets that the genereator will generate
+	
+	
 	
 	public Generator_CBR(int network, int node) {
 		super(network, node);
-		// TODO Auto-generated constructor stub
-		_id = new NetworkAddr(network, node);
+		_id = new NetworkAddr(network, node); //id of the network
 
 	}
 	
 	
-	public void StartSending(int network, int node, int number, int timeInterval, int startSeq)
+	public void StartSending(int network, int node, int number, int packets_per_second)
 	{
 		_stopSendingAfter = number;
-		_timeBetweenSending = timeInterval;
+		_packets_per_second = packets_per_second;
 		_toNetwork = network;
 		_toHost = node;
-		_seq = startSeq;
+		_seq = 1;
 		send(this, new TimerEvent(),0);	
 	}
 
@@ -30,14 +28,22 @@ public class Generator_CBR extends Node {
 	{
 		if (ev instanceof TimerEvent)
 		{			
-			if (_stopSendingAfter > _sentmsg)
+			if (_stopSendingAfter < _sentmsg)
 			{
+				double tempT = 1/_packets_per_second;
+				
+				for(int i = 0; i < _packets_per_second; i++) {
+					
+				
+				
 				_sentmsg++;
 				System.out.println(_id);
 				send(_peer, new Message(_id, new NetworkAddr(_toNetwork, _toHost),_seq),0);
 				send(this, new TimerEvent(),_timeBetweenSending);
 				System.out.println("Node "+_id.networkId()+ "." + _id.nodeId() +" sent message with seq: "+_seq + " at time "+SimEngine.getTime());
 				_seq++;
+			}
+				
 			}
 		}
 		if (ev instanceof Message)

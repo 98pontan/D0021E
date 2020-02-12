@@ -16,7 +16,7 @@ public class Run {
 		Node host2 = new Node(2,1);
 		
 		// Create a host that will be comunicating via the router
-		Generator_CBR host3 = new Generator_CBR(3, 2);
+		//Generator_CBR host3 = new Generator_CBR(3, 2);
 		//Connect links to hosts
 		host1.setPeer(link1);
 		host2.setPeer(link2);
@@ -32,8 +32,8 @@ public class Run {
 		
 		// Generate some traffic
 		// host1 will send 20 messages with time interval 5 to network 2, node 1. Sequence starts with number 1
-		//host1.StartSending(2, 2, 10, 5, 1);
-		host3.StartSending(2, 1, 30, 2, 1);
+		host1.StartSending(2, 2, 10, 5, 1);
+		//host3.StartSending(2, 1, 30, 2, 1);
 		// host2 will send 30 messages with time interval 7 to network 1, node 1. Sequence starts with number 10
 		//host2.StartSending(1, 1, 30, 7, 10);
 		
