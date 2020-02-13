@@ -31,20 +31,24 @@ public class Generator_CBR extends Node {
 			if (_stopSendingAfter < _sentmsg)
 			{
 				double tempT = 1/_packets_per_second;
-				
+				int package_number = 1;
 				for(int i = 0; i < _packets_per_second; i++) {
 					
 				
-				
+				System.out.println("Packge number " + package_number + "Time " + (_time + SimEngine.getTime()));
 				_sentmsg++;
 				System.out.println(_id);
 				send(_peer, new Message(_id, new NetworkAddr(_toNetwork, _toHost),_seq),0);
 				send(this, new TimerEvent(),_timeBetweenSending);
 				System.out.println("Node "+_id.networkId()+ "." + _id.nodeId() +" sent message with seq: "+_seq + " at time "+SimEngine.getTime());
 				_seq++;
-			}
+				_time += tempT;
+				package_number ++;
+				}
 				
+			
 			}
+			send(this, new TimerEvent(),1);
 		}
 		if (ev instanceof Message)
 		{

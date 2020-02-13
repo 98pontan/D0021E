@@ -12,14 +12,17 @@ public class Run {
 		
 		// Create two end hosts that will be
 		// communicating via the router
-		Node host1 = new Node(1,1);
-		Node host2 = new Node(2,1);
+		//Node host1 = new Node(1,1);
+		//Node host2 = new Node(2,1);
+		
+		// CBR
+		Generator_CBR host1 = new Generator_CBR(1,1);
 		
 		// Create a host that will be comunicating via the router
-		//Generator_CBR host3 = new Generator_CBR(3, 2);
+		
 		//Connect links to hosts
 		host1.setPeer(link1);
-		host2.setPeer(link2);
+		//host2.setPeer(link2);
 
 		// Creates as router and connect
 		// links to it. Information about 
@@ -28,7 +31,7 @@ public class Run {
 		// Note. A switch is created in same way using the Switch class
 		Router routeNode = new Router(2);
 		routeNode.connectInterface(0, link1, host1);
-		routeNode.connectInterface(1, link2, host2);
+	//	routeNode.connectInterface(1, link2, host2);
 		
 		// Generate some traffic
 		// host1 will send 20 messages with time interval 5 to network 2, node 1. Sequence starts with number 1
