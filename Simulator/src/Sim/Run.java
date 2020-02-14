@@ -7,8 +7,13 @@ public class Run {
 	public static void main (String [] args)
 	{
  		//Creates two links
- 		Link link1 = new LossyLink(50, 5, 0.08);
-		Link link2 = new LossyLink(50, 10, 0.00);
+		Link link1 = new Link();
+		Link link2 = new Link();
+
+		TimeWriter time = new TimeWriter();
+
+		//Link link1 = new LossyLink(50, 5, 0.08);
+		//Link link2 = new LossyLink(50, 10, 0.00);
 		
 		// Create two end hosts that will be
 		// communicating via the router
@@ -16,7 +21,10 @@ public class Run {
 		Node host2 = new Node(2,1);
 		
 		// CBR
-		Generator_CBR host1 = new Generator_CBR(1,1);
+		//Generator_CBR host1 = new Generator_CBR(1,1);
+
+		//Gaussian
+		Generator_Gaussian host1 = new Generator_Gaussian(1, 1);
 		
 		// Create a host that will be comunicating via the router
 		
@@ -25,7 +33,7 @@ public class Run {
 		host2.setPeer(link2);
 
 		// Creates as router and connect
-		// links to it. Information about 
+		// links to it. Information about
 		// the host connected to the other
 		// side of the link is also provided
 		// Note. A switch is created in same way using the Switch class
@@ -33,7 +41,11 @@ public class Run {
 		routeNode.connectInterface(0, link1, host1);
 		routeNode.connectInterface(1, link2, host2);
 		
-		host1.StartSending(1, 1, 10, 3);
+		//Gaussian
+		host1.StartSending(2, 2, 3, 8, 1000);
+
+		//CBR
+		//host1.StartSending(1, 1, 10, 3);
 		// Generate some traffic
 		// host1 will send 20 messages with time interval 5 to network 2, node 1. Sequence starts with number 1
 		//host1.StartSending(2, 2, 10, 6, 1);
@@ -49,13 +61,6 @@ public class Run {
 		try
 		{
 			t.join();
-			System.out.println("Link 1 average delays: " + ((LossyLink) link1).averageDelay());
-			System.out.println("Link 1 average delays: " + ((LossyLink) link1).averageDelay());
-			System.out.println("Link 1 delays: " + ((LossyLink) link1).delays.size());
-			for (int i = 0; i < ((LossyLink) link1).delays.size(); i++) {
-				System.out.println(((LossyLink) link1).delays.get(i));
-			}
-			System.out.println("Link 1 dropped packages: " + ((LossyLink) link1).droppedPackages);
 		}
 		catch (Exception e)
 		{
