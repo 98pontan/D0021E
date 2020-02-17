@@ -24,7 +24,10 @@ public class Run {
 		//Generator_CBR host1 = new Generator_CBR(1,1);
 
 		//Gaussian
-		Generator_Gaussian host1 = new Generator_Gaussian(1, 1);
+		//Generator_Gaussian host1 = new Generator_Gaussian(1, 1);
+		
+		// Poisson
+		Generator_Poisson host1 = new Generator_Poisson(1, 1);
 		
 		// Create a host that will be comunicating via the router
 		
