@@ -33,8 +33,7 @@ public class Generator_Gaussian extends Node {
             {
                 for(int i = 0; i < _stopSendingAfter; i++) {
                     double gaussianValue = getGaussianValue();
-                    //System.out.println("Packge number " + _seq + "Time " + (_time + SimEngine.getTime()));
-                    TimeWriter.logTime(gaussianValue, "gaus");
+                    TimeWriter.logTime(SimEngine.getTime()+gaussianValue, "gaus");
                     _sentmsg++;
                     send(_peer, new Message(_id, new NetworkAddr(_toNetwork, _toHost),_seq), gaussianValue);
                     send(this, new TimerEvent(), gaussianValue);
@@ -52,7 +51,7 @@ public class Generator_Gaussian extends Node {
         }
     }
     public double getGaussianValue() {
-        return r.nextGaussian()*standardDeviation+mean;
+        return r.nextGaussian()*this.standardDeviation+this.mean;
     }
 }
 
