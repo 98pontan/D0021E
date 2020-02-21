@@ -4,9 +4,10 @@ package Sim;
 
 public class Router extends SimEnt{
 
-	private RouteTableEntry [] _routingTable;
-	private int _interfaces;
-	private int _now=0;
+	protected RouteTableEntry [] _routingTable;
+	protected int _interfaces;
+	protected int _now=0;
+
 
 	// When created, number of interfaces are defined
 	
@@ -15,7 +16,7 @@ public class Router extends SimEnt{
 		_routingTable = new RouteTableEntry[interfaces];
 		_interfaces=interfaces;
 	}
-	
+
 	// This method connects links to the router and also informs the 
 	// router of the host connects to the other end of the link
 	
@@ -31,11 +32,12 @@ public class Router extends SimEnt{
 		((Link) link).setConnector(this);
 	}
 
+
 	// This method searches for an entry in the routing table that matches
 	// the network number in the destination field of a messages. The link
 	// represents that network number is returned
 	
-	private SimEnt getInterface(int networkAddress)
+	protected SimEnt getInterface(int networkAddress)
 	{
 		SimEnt routerInterface=null;
 		for(int i=0; i<_interfaces; i++)
