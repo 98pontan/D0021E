@@ -1,11 +1,11 @@
 package Sim;
 
-public class MoveInterface implements Event {
+public class MoveInterfaceEvent implements Event {
 	
 	private NetworkAddr _lastInterface;
 	private int _newInterfaceNumber;
 	
-	MoveInterface(NetworkAddr source, int newInterfaceNumber) {
+	MoveInterfaceEvent(NetworkAddr source, int newInterfaceNumber) {
 		// TODO Auto-generated method stub
 		_lastInterface = source;
 		_newInterfaceNumber = newInterfaceNumber;
