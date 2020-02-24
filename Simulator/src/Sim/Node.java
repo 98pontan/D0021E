@@ -82,7 +82,7 @@ public class Node extends SimEnt {
 				System.out.println("Node "+_id.networkId()+ "." + _id.nodeId() +" sent message with seq: "+_seq + " at time "+SimEngine.getTime());
 				_seq++;
 				if (_sentmsg == _numberOfMessages) {
-					send(_peer, new MoveInterface(_id, _desiredInterface, _olderInterface), 0);
+					send(_peer, new MoveInterfaceEvent(_id, _desiredInterface, _olderInterface), 0);
 					System.err.println("MoveInterface: " + _peer);
 					//send(this, new TimerEvent(),_timeBetweenSending);
 					System.out.println("FUUUUUUUUUUUUUUU");

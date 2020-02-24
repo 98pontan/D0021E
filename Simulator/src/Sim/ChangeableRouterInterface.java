@@ -36,8 +36,8 @@ public class ChangeableRouterInterface extends Router {
     public void recv(SimEnt source, Event event) {
         System.out.println("Event Type rcv in router: " + event);
         System.out.println("Src: " + source);
-        if (event instanceof MoveInterface) {
-            changeInterface(((MoveInterface) event)._oldInterface, ((MoveInterface) event)._newInterfaceNumber());
+        if (event instanceof MoveInterfaceEvent) {
+            changeInterface(((MoveInterfaceEvent) event)._oldInterface, ((MoveInterfaceEvent) event)._newInterfaceNumber());
             System.out.println("fuk");
         }
         if (event instanceof Message) {

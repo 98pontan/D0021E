@@ -28,7 +28,6 @@ public class Run {
 		//Router routeNode = new Router(2);
 		ChangeableRouterInterface routeNode = new ChangeableRouterInterface(10);
 
-		
 		routeNode.connectInterface(0, link1, host1);
 		routeNode.connectInterface(1, link2, host2);
 		// Generate some traffic
