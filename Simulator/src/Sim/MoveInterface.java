@@ -4,11 +4,13 @@ public class MoveInterface implements Event {
 	
 	private NetworkAddr _lastInterface;
 	private int _newInterfaceNumber;
+	protected int _oldInterface;
 	
-	MoveInterface(NetworkAddr source, int newInterfaceNumber) {
+	MoveInterface(NetworkAddr source, int newInterfaceNumber, int oldInterface) {
 		// TODO Auto-generated method stub
-		_lastInterface = source;
-		_newInterfaceNumber = newInterfaceNumber;
+		this._lastInterface = source;
+		this._newInterfaceNumber = newInterfaceNumber;
+		this._oldInterface = oldInterface;
 	}
 	
 	public NetworkAddr lastInterface() {
