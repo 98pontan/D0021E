@@ -13,17 +13,18 @@ public class HomeAgent extends ChangeableRouterInterface {
 	
 	
 	
-	public void changeInterface(int newInterfaceNumber, int oldInterfaceNumber) {
+	public void Handover(int newInterfaceNumber, int oldInterfaceNumber) {
 		if (currentLocation == homeLocation) {
-			_routingTable[currentLocation} = route;
+			_routingTable[currentLocation] = route;
+			 System.out.println("You are still att Home");
+	
 		}
-        if (newInterfaceNumber < _interfaces && _routingTable[newInterfaceNumber] == null) {
+		else {
             RouteTableEntry route = _routingTable[oldInterfaceNumber];
             _routingTable[oldInterfaceNumber] = null;
             _routingTable[newInterfaceNumber] = route;
-        } else
-            System.out.println("The port doesn't exist or is already occupied");
+		}
 
-    }
-
+	}
+	
 }
