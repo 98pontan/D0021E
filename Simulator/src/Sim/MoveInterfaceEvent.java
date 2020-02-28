@@ -2,26 +2,25 @@ package Sim;
 
 public class MoveInterfaceEvent implements Event {
 	
-	private NetworkAddr _lastInterface;
+	private NetworkAddr _networkAddress;
 	private int _newInterfaceNumber;
-	protected int _oldInterface;
-
+	private int _oldInterface;
 
 	MoveInterfaceEvent(NetworkAddr source, int newInterfaceNumber, int oldInterface) {
 		// TODO Auto-generated method stub
-		this._lastInterface = source;
+		this._networkAddress = source;
 		this._newInterfaceNumber = newInterfaceNumber;
 		this._oldInterface = oldInterface;
 	}
 	
-	public NetworkAddr lastInterface() {
-		return _lastInterface;
+	public NetworkAddr _networkAdress() {
+		return _networkAddress;
 	}
 	
 	public int _newInterfaceNumber(){
 		return _newInterfaceNumber;
 	}
-	
+	public int _oldInterface() { return _oldInterface; }
 	
 	public void entering(SimEnt locale) {
 		
