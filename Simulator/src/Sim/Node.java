@@ -60,7 +60,6 @@ public class Node extends SimEnt {
 	private int _olderInterface;
 	void moveInterfaceAfter(int desiredInterface, int numberOfMessages, int olderInterface) {
 		_numberOfMessages = numberOfMessages;
-		//_oldInterface = oldInterface;
 		_desiredInterface = desiredInterface;
 		_olderInterface = olderInterface;
 	}
@@ -78,14 +77,10 @@ public class Node extends SimEnt {
 				_sentmsg++;
 				send(_peer, new Message(_id, new NetworkAddr(_toNetwork, _toHost),_seq),0);
 				send(this, new TimerEvent(),_timeBetweenSending);
-				System.err.println("Message: " + _peer);
 				System.out.println("Node "+_id.networkId()+ "." + _id.nodeId() +" sent message with seq: "+_seq + " at time "+SimEngine.getTime());
 				_seq++;
 				if (_sentmsg == _numberOfMessages) {
 					send(_peer, new MoveInterfaceEvent(_id, _desiredInterface, _olderInterface), 0);
-					System.err.println("MoveInterface: " + _peer);
-					//send(this, new TimerEvent(),_timeBetweenSending);
-					System.out.println("FUUUUUUUUUUUUUUU");
 					System.out.println("Node " + _id.networkId() + "."+_id.nodeId() + "tries to change interface to " + _desiredInterface);
 				}
 			}

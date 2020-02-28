@@ -27,19 +27,18 @@ public class Run {
 		// Note. A switch is created in same way using the Switch class
 		//Router routeNode = new Router(2);
 		ChangeableRouterInterface routeNode = new ChangeableRouterInterface(10);
-
 		routeNode.connectInterface(0, link1, host1);
 		routeNode.connectInterface(1, link2, host2);
+		routeNode.printInterfaces();
+
 		// Generate some traffic
 		// host1 will send 20 messages with time interval 5 to network 2, node 1. Sequence starts with number 1
 
-		host1.moveInterfaceAfter(4, 2, 0);
-		host2.moveInterfaceAfter(3, 3, 1);
+		host1.moveInterfaceAfter(3, 2, 0);
 		//routeNode.changeInterface(9, 0);
 		//routeNode.printInterfaces();
 
-		host1.StartSending(2, 2, 15, 6, 1);
-		host2.StartSending(1, 1, 30, 7, 10);
+		host1.StartSending(2, 2, 10, 6, 1);
 
 		// host2 will send 30 messages with time interval 7 to network 1, node 1. Sequence starts with number 10
 
