@@ -1,10 +1,10 @@
 package Sim;
 
-public class ChangeableRouterInterface extends Router {
+public class RouterInterfaceChanger extends Router {
 
     // When created, number of interfaces are defined
 
-    ChangeableRouterInterface(int interfaces) {
+    RouterInterfaceChanger(int interfaces) {
         super(interfaces);
         this._interfaces = interfaces;
     }

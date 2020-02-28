@@ -26,7 +26,7 @@ public class Run {
 		// side of the link is also provided
 		// Note. A switch is created in same way using the Switch class
 		//Router routeNode = new Router(2);
-		ChangeableRouterInterface routeNode = new ChangeableRouterInterface(10);
+		RouterInterfaceChanger routeNode = new RouterInterfaceChanger(10);
 		routeNode.connectInterface(0, link1, host1);
 		routeNode.connectInterface(1, link2, host2);
 		routeNode.printInterfaces();
