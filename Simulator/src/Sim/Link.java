@@ -27,8 +27,6 @@ public class Link extends SimEnt{
 	
 	public void recv(SimEnt src, Event ev)
 	{
-		if (ev instanceof Message || ev instanceof MoveInterfaceEvent)
-		{
 			System.out.println("Link recv msg, passes it through");
 			if (src == _connectorA)
 			{
@@ -38,6 +36,6 @@ public class Link extends SimEnt{
 			{
 				send(_connectorA, ev, _now);
 			}
-		}
+
 	}	
 }

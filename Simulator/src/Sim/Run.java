@@ -8,6 +8,7 @@ public class Run {
 	public static void main (String [] args)
 	{
 
+		NetworkAddr n1 = new NetworkAddr(3, 1);
 
 		Link link1 = new Link();
 		Link link2 = new Link();
@@ -26,7 +27,7 @@ public class Run {
 		// side of the link is also provided
 		// Note. A switch is created in same way using the Switch class
 		//Router routeNode = new Router(2);
-		RouterInterfaceChanger routeNode = new RouterInterfaceChanger(10);
+		HomeAgent routeNode = new HomeAgent(10);
 		routeNode.connectInterface(0, link1, host1);
 		routeNode.connectInterface(1, link2, host2);
 		routeNode.printInterfaces();
@@ -34,11 +35,14 @@ public class Run {
 		// Generate some traffic
 		// host1 will send 20 messages with time interval 5 to network 2, node 1. Sequence starts with number 1
 
+
+		host1.newNetworkAddress(n1);
 		host1.moveInterfaceAfter(3, 2, 0);
 		//routeNode.changeInterface(9, 0);
 		//routeNode.printInterfaces();
 
 		host1.StartSending(2, 2, 10, 6, 1);
+
 
 		// host2 will send 30 messages with time interval 7 to network 1, node 1. Sequence starts with number 10
 

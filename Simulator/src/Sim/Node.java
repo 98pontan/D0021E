@@ -64,6 +64,11 @@ public class Node extends SimEnt {
 		_olderInterface = olderInterface;
 	}
 
+	private NetworkAddr _careOfAddress;
+	public void newNetworkAddress(NetworkAddr careOfAddress) {
+		_careOfAddress = careOfAddress;
+	}
+
 //**********************************************************************************	
 
 	// This method is called upon that an event destined for this node triggers.
@@ -76,15 +81,12 @@ public class Node extends SimEnt {
 			{
 				_sentmsg++;
 				send(_peer, new Message(_id, new NetworkAddr(_toNetwork, _toHost),_seq),0);
-<<<<<<< HEAD
-				//send(_peer, new MoveInterfaceEvent(_id, _desiredInterface, _olderInterface), 0);
-=======
->>>>>>> master
 				send(this, new TimerEvent(),_timeBetweenSending);
 				System.out.println("Node "+_id.networkId()+ "." + _id.nodeId() +" sent message with seq: "+_seq + " at time "+SimEngine.getTime());
 				_seq++;
 				if (_sentmsg == _numberOfMessages) {
-					send(_peer, new MoveInterfaceEvent(_id, _desiredInterface, _olderInterface), 0);
+					send(_peer, new NotifyHAEvent(_careOfAddress, _id), 0);
+					//send(_peer, new MoveInterfaceEvent(_id, _desiredInterface, _olderInterface), 0);
 					System.out.println("Node " + _id.networkId() + "."+_id.nodeId() + "tries to change interface to " + _desiredInterface);
 				}
 			}

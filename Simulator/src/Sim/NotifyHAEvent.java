@@ -1,15 +1,24 @@
 package Sim;
 
 public class NotifyHAEvent implements Event{
-    private NetworkAddr _foreignAddress;
-    private Node _node;
-    NotifyHAEvent(NetworkAddr foreignAddress, Node node) {
-        this._foreignAddress = foreignAddress;
-        this._node = node;
+    private NetworkAddr careOfAddress;
+    private NetworkAddr homeAddress;
+
+    NotifyHAEvent(NetworkAddr careOfAddress, NetworkAddr homeAddress) {
+        this.careOfAddress = careOfAddress;
+        this.homeAddress = homeAddress;
 
     }
 
     public void entering(SimEnt locale) {
 
+    }
+
+    public NetworkAddr getCareOfAddress() {
+        return careOfAddress;
+    }
+
+    public NetworkAddr getHomeAddress() {
+        return homeAddress;
     }
 }
