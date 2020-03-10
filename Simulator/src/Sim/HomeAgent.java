@@ -29,14 +29,18 @@ public class HomeAgent extends RouterInterfaceChanger {
         if (event instanceof Message) {
             System.out.println("Router handles packet with seq: " + ((Message) event).seq() + " from node: " + ((Message) event).source().networkId() + "." + ((Message) event).source().nodeId());
             SimEnt sendNext = getInterface(((Message) event).destination().networkId());
+            int temp = routingTable.get(address).networkId();
+            simEnt sendNext = getInterface();
             System.out.println("Router sends to node: " + ((Message) event).destination().networkId() + "." + ((Message) event).destination().nodeId());
+//          HashMap.containsKey();
             send(sendNext, event, _now);
         }
     }
 
     public void networkChanger(NetworkAddr homeAddress, NetworkAddr careOfAddress){
         routingTable.put(homeAddress, careOfAddress);
-        System.out.println("fan");
+        address = careOfAddress;
+        System.out.println("re-directed traffic");
         System.out.println(routingTable);
 
     }
