@@ -9,7 +9,8 @@ public class Run {
 	{
 
 		NetworkAddr n1 = new NetworkAddr(3, 1);
-
+		
+		// Creates two links
 		Link link1 = new Link();
 		Link link2 = new Link();
 
