@@ -5,12 +5,13 @@ import java.util.HashMap;
 public class HomeAgent extends RouterInterfaceChanger {
     protected HomeAgentEntry _homeAgentTable; 
     private NetworkAddr address;
-    protected HashMap<NetworkAddr, NetworkAddr> routingTable; // HashMap for mapping home addresses to the new address, Key HomeAddress Value foreign address 
+    protected HashMap<NetworkAddr, NetworkAddr> routingTable; // HashMap for mapping home addresses to the new address, Key HomeAddress Value foreign address
+    private int routerID;
 
-    HomeAgent(int interfaces) {
+    HomeAgent(int interfaces, int _routerID) {
         super(interfaces);
-        this.routingTable = new HashMap<>(); // Generating HashMaps
-        // TODO Auto-generated constructor stub
+        this.routingTable = new HashMap<>();
+        this.routerID = _routerID;
     }
     
     public boolean flag(int nodeId) {
@@ -40,7 +41,8 @@ public class HomeAgent extends RouterInterfaceChanger {
         }
         if (event instanceof Message) {
             System.out.println("Router handles packet with seq: " + ((Message) event).seq() + " from node: " + ((Message) event).source().networkId() + "." + ((Message) event).source().nodeId());
-            SimEnt sendNext = getInterface(((Message) event).destination().networkId());
+            //SimEnt sendNext = getInterface(((Message) event).destination().networkId());
+            SimEnt sendNext;
             NetworkAddr destination = ((Message) event).destination();
             NetworkAddr careOfAddress = routingTable.get(destination);
             System.out.println("Router sends to node: " + ((Message) event).destination().networkId() + "." + ((Message) event).destination().nodeId());
