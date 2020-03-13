@@ -54,15 +54,18 @@ public class Node extends SimEnt {
 		send(this, new TimerEvent(),0);
 	}
 
-	private int _numberOfMessages = 0;
+	private int _changeInterfaceAfter = 0;
 	private int _desiredInterface;
 	private NetworkAddr _oldInterface;
 	private int _olderInterface;
-	private int changeRouterAfter;
-	private Router _nextRouter;
+
+	/* Router variables */
+	private int _changeRouterAfter;
+	private HomeAgent _nextRouter;
+	private HomeAgent _fromRouter;
 	
 	void moveInterfaceAfter(int desiredInterface, int numberOfMessages, int olderInterface) {
-		_numberOfMessages = numberOfMessages;
+		_changeInterfaceAfter = numberOfMessages;
 		_desiredInterface = desiredInterface;
 		_olderInterface = olderInterface;
 	}
@@ -78,9 +81,10 @@ public class Node extends SimEnt {
 		send(_peer, new Solicitation(this._id, 0), 0);
 	}
 	
-	protected void changeRouterAfter(int NumberOfMessages, Router nextRouter ) {
+	protected void changeRouterAfter(int NumberOfMessages, HomeAgent fromRouter, HomeAgent nextRouter) {
 		_nextRouter = nextRouter;
-		changeRouterAfter = NumberOfMessages;
+		_changeRouterAfter = NumberOfMessages;
+		_fromRouter = fromRouter;
 	}
 	
 	
@@ -99,10 +103,13 @@ public class Node extends SimEnt {
 				send(this, new TimerEvent(),_timeBetweenSending);
 				System.out.println("Node "+_id.networkId()+ "." + _id.nodeId() +" sent message with seq: "+_seq + " at time "+SimEngine.getTime());
 				_seq++;
-				if (_sentmsg == _numberOfMessages) {
-					send(_peer, new NotifyHAEvent(_careOfAddress, _id), 0);
-					//send(_peer, new MoveInterfaceEvent(_id, _desiredInterface, _olderInterface), 0);
+				if (_sentmsg == _changeInterfaceAfter) {
+					send(_peer, new MoveInterfaceEvent(_id, _desiredInterface, _olderInterface), 0);
 					System.out.println("Node " + _id.networkId() + "."+_id.nodeId() + "tries to change interface to " + _desiredInterface);
+				}
+				else if (_sentmsg == _changeRouterAfter) {
+					send(_peer, new BindingUpdate(_careOfAddress, _id), 0);
+					System.out.println("Change router after ACCESSED");
 				}
 			}
 		}

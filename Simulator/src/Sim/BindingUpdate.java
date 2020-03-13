@@ -1,10 +1,10 @@
 package Sim;
 
-public class NotifyHAEvent implements Event{
+public class BindingUpdate implements Event{
     private NetworkAddr careOfAddress;
     private NetworkAddr homeAddress;
 
-    NotifyHAEvent(NetworkAddr careOfAddress, NetworkAddr homeAddress) {
+    BindingUpdate(NetworkAddr careOfAddress, NetworkAddr homeAddress) {
         this.careOfAddress = careOfAddress;
         this.homeAddress = homeAddress;
 
