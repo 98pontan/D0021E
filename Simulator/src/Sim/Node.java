@@ -58,6 +58,9 @@ public class Node extends SimEnt {
 	private int _desiredInterface;
 	private NetworkAddr _oldInterface;
 	private int _olderInterface;
+	private int changeRouterAfter;
+	private Router _nextRouter;
+	
 	void moveInterfaceAfter(int desiredInterface, int numberOfMessages, int olderInterface) {
 		_numberOfMessages = numberOfMessages;
 		_desiredInterface = desiredInterface;
@@ -65,10 +68,22 @@ public class Node extends SimEnt {
 	}
 
 	private NetworkAddr _careOfAddress;
+	
 	public void newNetworkAddress(NetworkAddr careOfAddress) {
 		_careOfAddress = careOfAddress;
 	}
 
+	protected void solicit() {
+		System.out.println(this.toString() + " Solicitation request sent");
+		send(_peer, new Solicitation(this._id, 0), 0);
+	}
+	
+	protected void changeRouterAfter(int NumberOfMessages, Router nextRouter ) {
+		_nextRouter = nextRouter;
+		changeRouterAfter = NumberOfMessages;
+	}
+	
+	
 //**********************************************************************************	
 
 	// This method is called upon that an event destined for this node triggers.

@@ -18,6 +18,7 @@ public class RouterInterfaceChanger extends Router {
             _routingTable[oldInterfaceNumber] = null;
             _routingTable[newInterfaceNumber] = route;
             printInterfaces();
+            
         } else {
             System.out.println("The port doesn't exist or is already occupied");
         }
