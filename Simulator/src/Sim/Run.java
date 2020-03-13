@@ -32,17 +32,15 @@ public class Run {
 		
 		// Creates home agent with 10 interfaces
 		HomeAgent routeNode = new HomeAgent(10);
+		HomeAgent routeNode1 = new HomeAgent(10);
 		// Connects two interfaces
 		routeNode.connectInterface(0, link1, host1);
 		routeNode.connectInterface(1, link2, host2);
 		routeNode.printInterfaces();
 
 		// Generate some traffic
-		
-		
-		host1.newNetworkAddress(n1);
-		host1.moveInterfaceAfter(3, 2, 0);
-		
+		//host1.moveInterfaceAfter(3, 2, 0);
+		host1.changeRouterAfter(4, routeNode, routeNode1);
 		
 		//routeNode.changeInterface(9, 0);
 		//routeNode.printInterfaces();
