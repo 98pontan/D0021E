@@ -13,23 +13,13 @@ public class HomeAgent extends RouterInterfaceChanger {
         // TODO Auto-generated constructor stub
     }
     
-    public boolean flag(int nodeId) {
-    	for(NetworkAddr i: routingTable.keySet()) {
-    		if (i.nodeId() == nodeId) {
-    			return true;
-    		}
-    		
-    	}
-		return false;    	
-    }
-
     
     public void recv(SimEnt source, Event event) {
         System.out.println("Event Type rcv in router: " + event);
         System.out.println("Src: " + source);
         
+        // When an binding update occur it will receive the addresses and call networkChanger to bind them in the HashMap
         if (event instanceof BindingUpdate) {
-            // call function that changes network address
             System.out.println(((BindingUpdate) event).getHomeAddress());
             networkChanger(((BindingUpdate) event).getHomeAddress(), ((BindingUpdate) event).getCareOfAddress());
         }
@@ -42,9 +32,15 @@ public class HomeAgent extends RouterInterfaceChanger {
             System.out.println("Router handles packet with seq: " + ((Message) event).seq() + " from node: " + ((Message) event).source().networkId() + "." + ((Message) event).source().nodeId());
             SimEnt sendNext = getInterface(((Message) event).destination().networkId());
             NetworkAddr destination = ((Message) event).destination();
-            NetworkAddr careOfAddress = routingTable.get(destination);
+            NetworkAddr careOfAddress = routingTable.get(destination); // Lookup in the HashMap to redirect the incoming message
             System.out.println("Router sends to node: " + ((Message) event).destination().networkId() + "." + ((Message) event).destination().nodeId());
             if (careOfAddress != null) {
+            	for(NetworkAddr i: routingTable.keySet() ) {
+            		if(careOfAddress == routingTable.get(i)) {
+            			
+            			
+            		}
+            	}
                 sendNext = getInterface(careOfAddress.networkId());
             }
             else {
@@ -57,7 +53,7 @@ public class HomeAgent extends RouterInterfaceChanger {
 
     public void networkChanger(NetworkAddr homeAddress, NetworkAddr careOfAddress){
         routingTable.put(homeAddress, careOfAddress);
-        System.out.println("fan");
+        System.out.println("networkChanger Test");
         System.out.println(routingTable);
 
     }
