@@ -8,11 +8,11 @@ public class Run {
 	public static void main (String [] args)
 	{
 
-		NetworkAddr n1 = new NetworkAddr(3, 1);
 		
 		// Creates two links
 		Link link1 = new Link();
 		Link link2 = new Link();
+		Link link3 = new Link();
 
 		// Create two end hosts that will be
 		// communicating via the router
@@ -34,7 +34,10 @@ public class Run {
 		HomeAgent routeNode = new HomeAgent(10);
 		HomeAgent routeNode1 = new HomeAgent(10);
 		// Connects two interfaces
-		routeNode.connectInterface(0, link1, host1);
+		routeNode.connectInterface(0, link3, routeNode1);
+		routeNode1.connectInterface(0, link3, routeNode);
+
+		routeNode.connectInterface(1, link1, host1);
 		routeNode.connectInterface(1, link2, host2);
 		routeNode.printInterfaces();
 
