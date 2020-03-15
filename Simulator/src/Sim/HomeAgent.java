@@ -40,7 +40,9 @@ public class HomeAgent extends RouterInterfaceChanger {
             if (careOfAddress != null) {
             	for(NetworkAddr i: routingTable.keySet() ) {
             		if(careOfAddress == routingTable.get(i)) {
-            			//raise the value of nodeId by one
+            			//raise the value of networkId by one
+            			// Om både nodeId och networkId är samma, borde det inte vara nodeIdet som ska ändras?
+            			// Ska jag skapa en tillfälliglista för att hålla koll på vilka Id:en som är upptagna?
             			dublicateCareOfAddress = true;
             		}
             	}
