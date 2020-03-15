@@ -36,14 +36,22 @@ public class HomeAgent extends RouterInterfaceChanger {
             NetworkAddr destination = ((Message) event).destination();
             NetworkAddr careOfAddress = routingTable.get(destination); // Lookup in the HashMap to redirect the incoming message
             System.out.println("Router sends to node: " + ((Message) event).destination().networkId() + "." + ((Message) event).destination().nodeId());
+            boolean dublicateCareOfAddress = false;
             if (careOfAddress != null) {
             	for(NetworkAddr i: routingTable.keySet() ) {
             		if(careOfAddress == routingTable.get(i)) {
-            			
-            			
+            			//raise the value of nodeId by one
+            			dublicateCareOfAddress = true;
             		}
             	}
-                sendNext = getInterface(careOfAddress.networkId());
+            	if(dublicateCareOfAddress) {
+            		
+            		sendNext = getInterface(careOfAddress.networkId()+1);
+            	}
+            	else {
+            		sendNext = getInterface(careOfAddress.networkId());
+            	}
+                
             }
             else {
                 sendNext = getInterface(((Message) event).destination().networkId());
