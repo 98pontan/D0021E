@@ -14,7 +14,7 @@ public class Router extends SimEnt {
     private NetworkAddr networkAddress;
 
 
-    // When created, number of interfaces are defined
+    // When created, number of interfaces are defined-
 
     Router(int interfaces, int routerID) {
         _routingTable = new RouteTableEntry[interfaces];
@@ -64,14 +64,23 @@ public class Router extends SimEnt {
 
         if (event instanceof MoveInterfaceEvent) {
             changeInterface(((MoveInterfaceEvent) event)._oldInterface(), ((MoveInterfaceEvent) event)._newInterfaceNumber());
-            if (event instanceof Message) {
-                System.out.println("Router handles packet with seq: " + ((Message) event).seq() + " from node: " + ((Message) event).source().networkId() + "." + ((Message) event).source().nodeId());
-                SimEnt sendNext = getInterface(((Message) event).destination().networkId());
-                System.out.println("Router sends to node: " + ((Message) event).destination().networkId() + "." + ((Message) event).destination().nodeId());
-                send(sendNext, event, _now);
+            
+        }
+            
+       if (event instanceof Message) {
+           System.out.println("Router handles packet with seq: " + ((Message) event).seq() + " from node: " + ((Message) event).source().networkId() + "." + ((Message) event).source().nodeId());
+           SimEnt sendNext = getInterface(((Message) event).destination().networkId());
+           System.out.println("Router sends to node: " + ((Message) event).destination().networkId() + "." + ((Message) event).destination().nodeId());
+           send(sendNext, event, _now);
 
             }
-        }
+       
+       if (event instanceof Solicitation) {
+           System.out.println("Router recieved solictiation message from: " + ((Message) event).source().networkId() + "." + ((Message) event).source().nodeId());
+           //send() send advertisement
+           
+       }
+        
     }
 
     public void networkChanger(NetworkAddr homeAddress, NetworkAddr careOfAddress) {
