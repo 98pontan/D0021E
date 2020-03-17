@@ -36,25 +36,11 @@ public class HomeAgent extends RouterInterfaceChanger {
             NetworkAddr destination = ((Message) event).destination();
             NetworkAddr careOfAddress = routingTable.get(destination); // Lookup in the HashMap to redirect the incoming message
             System.out.println("Router sends to node: " + ((Message) event).destination().networkId() + "." + ((Message) event).destination().nodeId());
-            boolean dublicateCareOfAddress = false;
             if (careOfAddress != null) {
-            	for(NetworkAddr i: routingTable.keySet() ) {
-            		if(careOfAddress == routingTable.get(i)) {
-            			//raise the value of networkId by one
-            			// Om både nodeId och networkId är samma, borde det inte vara nodeIdet som ska ändras?
-            			// Ska jag skapa en tillfälliglista för att hålla koll på vilka Id:en som är upptagna?
-            			dublicateCareOfAddress = true;
-            		}
-            	}
-            	if(dublicateCareOfAddress) {
-            		
-            		sendNext = getInterface(careOfAddress.networkId()+1);
-            	}
-            	else {
-            		sendNext = getInterface(careOfAddress.networkId());
-            	}
-                
+            	sendNext = getInterface(careOfAddress.networkId());
+            	 
             }
+            		
             else {
                 sendNext = getInterface(((Message) event).destination().networkId());
             }
@@ -64,6 +50,12 @@ public class HomeAgent extends RouterInterfaceChanger {
     }
 
     public void networkChanger(NetworkAddr homeAddress, NetworkAddr careOfAddress){
+    	for(NetworkAddr i: routingTable.keySet() ) {
+	    	if(careOfAddress == routingTable.get(i)) {
+				routingTable.put(homeAddress,  careOfAddress.nodeId() +1));
+			}
+		
+    	}
         routingTable.put(homeAddress, careOfAddress);
         System.out.println("networkChanger Test");
         System.out.println(routingTable);
