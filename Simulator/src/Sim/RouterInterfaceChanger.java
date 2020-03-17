@@ -17,27 +17,29 @@ public class RouterInterfaceChanger extends Router {
             RouteTableEntry route = _routingTable[oldInterfaceNumber];
             _routingTable[oldInterfaceNumber] = null;
             _routingTable[newInterfaceNumber] = route;
-            printInterfaces();
+            //printInterfaces();
             
         } else {
             System.out.println("The port doesn't exist or is already occupied");
         }
     }
-
+/*
 
     public void printInterfaces() {
-        System.out.println("------------------");
-        for (int i = 0; i < _interfaces; i++) {
-            if(_routingTable[i] != null) {
-                System.out.println("Entry " + i + ": " + "Node " +(((Node) _routingTable[i].node()).getAddr().networkId()));
+        for(int i = 0; i <_routingTable.length; i++) {
+            if(_routingTable[i]!=null) {
+                if(_routingTable[i].node() instanceof Node){
+                    System.out.println("*** Node: " +((Node)_routingTable[i].node()).getAddr().networkId() + "." + ((Node)_routingTable[i].node()).getAddr().nodeId() + " router interface:" + i);
+                }else if(_routingTable[i].node() instanceof Router){
+                    System.out.println("*** Router id: " +((Router)_routingTable[i].node()).getRouterID()  + " on interface:" + i);
+                }
+
             }
-            else {
-                System.out.println("Entry " + i + ": " + "null");
-            }
-            //System.out.println((Node)_routingTable[i].node().getAddr());
+
         }
-        System.out.println("------------------");
     }
+
+ */
 
     // When messages are received at the router this method is called
 

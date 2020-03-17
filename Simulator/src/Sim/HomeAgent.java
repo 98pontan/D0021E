@@ -1,9 +1,9 @@
+
 package Sim;
 
 import java.util.HashMap;
 
 public class HomeAgent extends RouterInterfaceChanger {
-    protected HomeAgentEntry _homeAgentTable;
     protected HashMap<NetworkAddr, NetworkAddr> routingTable; // HashMap for mapping home addresses to the new address, Key HomeAddress Value foreign address
     private int routerID;
     private NetworkAddr networkAddress;
@@ -43,7 +43,6 @@ public class HomeAgent extends RouterInterfaceChanger {
             System.out.println("Router sends to node: " + ((Message) event).destination().networkId() + "." + ((Message) event).destination().nodeId());
             if (careOfAddress != null) {
             	sendNext = getInterface(careOfAddress.networkId());
-            	 
             }
             		
             else {
