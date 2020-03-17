@@ -18,7 +18,6 @@ public class BindingACK implements Event {
 	public NetworkAddr getCareOfAddress() {
 		return careOfAddress;
 	}
-
 	public NetworkAddr getHomeAddress() {
 		return homeAddress;
 	}

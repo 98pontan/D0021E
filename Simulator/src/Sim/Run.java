@@ -29,11 +29,11 @@ public class Run {
 		//Router routeNode = new Router(2);
 		
 		// Creates home agent with 10 interfaces
-		Router routeNode = new Router(10, 1);
-		Router routeNode1 = new Router(10, 2);
+		HomeAgent routeNode = new HomeAgent(10, 0);
+		HomeAgent routeNode1 = new HomeAgent(10, 1);
 		// Connects two interfaces
-		routeNode.connectInterface(0, link3, routeNode1);
-		routeNode1.connectInterface(0, link3, routeNode);
+		//routeNode.connectInterface(0, link3, routeNode1);
+		//routeNode1.connectInterface(0, link3, routeNode);
 
 		routeNode.connectInterface(1, link1, host1);
 		routeNode.connectInterface(1, link2, host2);
@@ -43,7 +43,7 @@ public class Run {
 		//host1.moveInterfaceAfter(3, 2, 0);
 		//host1.changeRouterAfter(4, routeNode, routeNode1);
 		
-		//routeNode.changeInterface(3, 1);
+		routeNode.changeInterface(3, 1);
 		//routeNode.printInterfaces();
 
 		host1.StartSending(2, 2, 10, 6, 1);
