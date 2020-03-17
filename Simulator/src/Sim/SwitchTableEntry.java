@@ -4,11 +4,12 @@ package Sim;
 //the link connecting to an interface as well as the node 
 //connected to the other side of the link
 
+
 public class SwitchTableEntry extends TableEntry{
 
-	SwitchTableEntry(NetworkAddr networkAddress, SimEnt link)
+	SwitchTableEntry(SimEnt link, SimEnt node)
 	{
-		super(networkAddress, link);
+		super(link, node);
 	}
 
 	public SimEnt link()
@@ -16,7 +17,7 @@ public class SwitchTableEntry extends TableEntry{
 		return super.link();
 	}
 
-	public int node()
+	public SimEnt node()
 	{
 		return super.node();
 	}

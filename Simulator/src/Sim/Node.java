@@ -128,7 +128,7 @@ public class Node extends SimEnt {
 	}
 
 
-	public void setupLink(HomeAgent routeNode) {
+	public void setupLink(Router routeNode) {
 		Link link = new Link();
 		this.setPeer(link);
 		routeNode.connectInterface(routeNode.getFreeInterface(), link, this);

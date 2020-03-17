@@ -9,20 +9,22 @@ public class Router extends SimEnt {
     protected RouteTableEntry[] _routingTable;
     protected int _interfaces;
     protected int _now = 0;
-    protected HashMap<NetworkAddr, NetworkAddr> routingTable; // HashMap for mapping home addresses to the new address, Key HomeAddress Value foreign address
-    private int networkID;
-    private NetworkAddr networkAddress;
+    private int routerID;
+    private HomeAgent homeAgent;
 
 
     // When created, number of interfaces are defined
 
-    Router(int interfaces, int networkID) {
+    Router(int interfaces, int routerID) {
         _routingTable = new RouteTableEntry[interfaces];
         _interfaces = interfaces;
-        this.routingTable = new HashMap<>();
-        networkAddress = new NetworkAddr(networkID, 0);
+        this.routerID = routerID;
+        homeAgent = new HomeAgent();
     }
 
+    public int getRouterID() {
+        return this.routerID;
+    }
 
     // This method connects links to the router and also informs the
     // router of the host connects to the other end of the link
@@ -42,13 +44,26 @@ public class Router extends SimEnt {
     // represents that network number is returned
 
 
-    protected SimEnt getInterface(int networkAddress) {
-        SimEnt routerInterface = null;
-        for (int i = 0; i < _interfaces; i++)
-            if (_routingTable[i] != null) {
-                if (((Node) _routingTable[i].node()).getAddr().networkId() == networkAddress) {
-                    routerInterface = _routingTable[i].link();
+    SimEnt getInterface(int networkAddress)
+    {
+        SimEnt routerInterface=null;
+        for(int i=0; i<_interfaces; i++)
+            if (_routingTable[i] != null)
+            {
+
+                if (_routingTable[i].node() instanceof Node) {
+                    if (((Node) _routingTable[i].node()).getAddr().networkId() == networkAddress)
+                    {
+                        routerInterface = _routingTable[i].link();
+                    }
                 }
+                else if (_routingTable[i].node() instanceof Router) {
+                    if (((Router) _routingTable[i].node()).getRouterID() == networkAddress)
+                    {
+                        return _routingTable[i].link();
+                    }
+                }
+
             }
         return routerInterface;
     }
@@ -71,16 +86,15 @@ public class Router extends SimEnt {
             //SimEnt sendNext = getInterface(((Message) event).destination().networkId());
             SimEnt sendNext;
             NetworkAddr destination = ((Message) event).destination();
-            NetworkAddr careOfAddress = routingTable.get(destination); // Lookup in the HashMap to redirect the incoming message
+            NetworkAddr careOfAddress = homeAgent.getCoaAddress(destination); // Lookup in the HashMap to redirect the incoming message
             System.out.println("Router sends to node: " + ((Message) event).destination().networkId() + "." + ((Message) event).destination().nodeId());
             if (careOfAddress != null) {
                 sendNext = getInterface(careOfAddress.networkId());
-            } else {
+            }
+            else {
                 sendNext = getInterface(destination.networkId());
             }
             send(sendNext, event, _now);
-
-
         }
         if (event instanceof Solicitation) {
             System.out.println("Router recieved solictiation message from: " + ((Message) event).source().networkId() + "." + ((Message) event).source().nodeId());
@@ -89,65 +103,60 @@ public class Router extends SimEnt {
     }
 
     public void networkChanger(NetworkAddr homeAddress, NetworkAddr careOfAddress) {
-        routingTable.put(homeAddress, careOfAddress);
-        System.out.println("networkChan" +
-                "ger Test");
-        System.out.println(routingTable);
-
+        homeAgent.newAddress(homeAddress, careOfAddress);
     }
 
-    public void changeInterface(int newInterfaceNumber, int oldInterfaceNumber) {
-        if (newInterfaceNumber < _interfaces && _routingTable[newInterfaceNumber] == null) {
-            RouteTableEntry route = _routingTable[oldInterfaceNumber];
-            _routingTable[oldInterfaceNumber] = null;
-            _routingTable[newInterfaceNumber] = route;
-            //printInterfaces();
+	public void changeInterface(int newInterfaceNumber, int oldInterfaceNumber) {
+		if (newInterfaceNumber < _interfaces && _routingTable[newInterfaceNumber] == null) {
+			RouteTableEntry route = _routingTable[oldInterfaceNumber];
+			_routingTable[oldInterfaceNumber] = null;
+			_routingTable[newInterfaceNumber] = route;
+			printInterfaces();
 
-        } else {
-            System.out.println("The port doesn't exist or is already occupied");
-        }
-    }
-/*
+		} else {
+			System.out.println("The port doesn't exist or is already occupied");
+		}
+	}
+
     public void printInterfaces() {
-        for (int i = 0; i < _routingTable.length; i++) {
-            if (_routingTable[i] != null) {
-                if (_routingTable[i].node() instanceof Node) {
-                    System.out.println("Node: " + ((Node) _routingTable[i].node()).getAddr().networkId() + "." + ((Node) _routingTable[i].node()).getAddr().nodeId() + " router interface:" + i);
-                } else if (_routingTable[i].node() instanceof Router) {
-                    System.out.println("Router id: " + ((Router) _routingTable[i].node()).getRouterID() + " on interface:" + i);
+        for(int i = 0; i <_routingTable.length; i++) {
+            if(_routingTable[i]!=null) {
+                if(_routingTable[i].node() instanceof Node){
+                    System.out.println("Node: " +((Node)_routingTable[i].node()).getAddr().networkId() + "." + ((Node)_routingTable[i].node()).getAddr().nodeId() + " router interface:" + i);
+                }else if(_routingTable[i].node() instanceof Router){
+                    System.out.println("Router id: " +((Router)_routingTable[i].node()).getRouterID()  + " on interface:" + i);
                 }
-            } else {
+            }
+            else {
                 System.out.println("Entry " + i + ": " + "null");
             }
 
         }
     }
-
- */
-
-    /*
-        public void printInterfaces() {
-            System.out.println("------------------");
-            for (int i = 0; i < _interfaces; i++) {
-                if(_routingTable[i] != null) {
-                    System.out.println("Entry " + i + ": " + "Node " +(((Node) _routingTable[i].node()).getAddr().networkId()));
-                }
-                else {
-                    System.out.println("Entry " + i + ": " + "null");
-                }
-                //System.out.println((Node)_routingTable[i].node().getAddr());
-            }
-            System.out.println("------------------");
-        }
-
-
-     */
     public int getFreeInterface() {
         for (int i = 0; i < _routingTable.length; i++) {
-            if (_routingTable[i] != null) {
+            if (_routingTable[i]!=null) {
                 return i;
             }
         }
-        return 0;
+        return -1;
     }
+
+/*
+	public void printInterfaces() {
+		System.out.println("------------------");
+		for (int i = 0; i < _interfaces; i++) {
+			if(_routingTable[i] != null) {
+				System.out.println("Entry " + i + ": " + "Node " +(((Node) _routingTable[i].node()).getAddr().networkId()));
+			}
+			else {
+				System.out.println("Entry " + i + ": " + "null");
+			}
+			//System.out.println((Node)_routingTable[i].node().getAddr());
+		}
+		System.out.println("------------------");
+	}
+
+
+ */
 }

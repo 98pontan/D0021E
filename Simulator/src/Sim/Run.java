@@ -29,8 +29,8 @@ public class Run {
 		//Router routeNode = new Router(2);
 		
 		// Creates home agent with 10 interfaces
-		HomeAgent routeNode = new HomeAgent(10, 1);
-		HomeAgent routeNode1 = new HomeAgent(10, 2);
+		Router routeNode = new Router(10, 1);
+		Router routeNode1 = new Router(10, 2);
 		// Connects two interfaces
 		routeNode.connectInterface(0, link3, routeNode1);
 		routeNode1.connectInterface(0, link3, routeNode);
@@ -46,7 +46,7 @@ public class Run {
 		//routeNode.changeInterface(3, 1);
 		//routeNode.printInterfaces();
 
-		host1.StartSending(2, 2, 10, 6, 1);
+		host1.StartSending(2, 1, 10, 6, 1);
 
 
 		// Start the simulation engine and of we go!
@@ -56,12 +56,14 @@ public class Run {
 		try
 		{
 			t.join();
-			/*
+
 			routeNode.printInterfaces();
 			System.out.println("======================================");
 			routeNode1.printInterfaces();
 
-			 */
+
+
+
 		}
 		catch (Exception e)
 		{
