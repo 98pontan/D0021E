@@ -7,8 +7,6 @@ import Sim.LossyLink;
 public class Run {
 	public static void main (String [] args)
 	{
-
-		
 		// Creates two links
 		Link link1 = new Link();
 		Link link2 = new Link();
@@ -31,8 +29,8 @@ public class Run {
 		//Router routeNode = new Router(2);
 		
 		// Creates home agent with 10 interfaces
-		HomeAgent routeNode = new HomeAgent(10);
-		HomeAgent routeNode1 = new HomeAgent(10);
+		Router routeNode = new Router(10, 1);
+		Router routeNode1 = new Router(10, 2);
 		// Connects two interfaces
 		routeNode.connectInterface(0, link3, routeNode1);
 		routeNode1.connectInterface(0, link3, routeNode);
@@ -43,9 +41,9 @@ public class Run {
 
 		// Generate some traffic
 		//host1.moveInterfaceAfter(3, 2, 0);
-		host1.changeRouterAfter(4, routeNode, routeNode1);
+		//host1.changeRouterAfter(4, routeNode, routeNode1);
 		
-		//routeNode.changeInterface(9, 0);
+		//routeNode.changeInterface(3, 1);
 		//routeNode.printInterfaces();
 
 		host1.StartSending(2, 2, 10, 6, 1);

@@ -21,7 +21,7 @@ public class MoveInterfaceEvent implements Event {
 		return _newInterfaceNumber;
 	}
 	public int _oldInterface() { return _oldInterface; }
-	
+
 	public void entering(SimEnt locale) {
 		
 	}

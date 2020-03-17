@@ -3,13 +3,14 @@ package Sim;
 import java.util.HashMap;
 
 public class HomeAgent extends RouterInterfaceChanger {
-    protected HomeAgentEntry _homeAgentTable; 
-    private NetworkAddr address;
+    protected HomeAgentEntry _homeAgentTable;
     protected HashMap<NetworkAddr, NetworkAddr> routingTable; // HashMap for mapping home addresses to the new address, Key HomeAddress Value foreign address
     private int routerID;
+    private NetworkAddr networkAddress;
 
     HomeAgent(int interfaces, int _routerID) {
         super(interfaces);
+        networkAddress = new NetworkAddr(routerID, 0);
         this.routingTable = new HashMap<>();
         this.routerID = _routerID;
     }
@@ -22,6 +23,10 @@ public class HomeAgent extends RouterInterfaceChanger {
     		
     	}
 		return false;    	
+    }
+
+    public NetworkAddr getNetworkAddress() {
+        return this.networkAddress;
     }
 
     
@@ -50,18 +55,33 @@ public class HomeAgent extends RouterInterfaceChanger {
                 sendNext = getInterface(careOfAddress.networkId());
             }
             else {
-                sendNext = getInterface(((Message) event).destination().networkId());
+                sendNext = getInterface(destination.networkId());
             }
-
             send(sendNext, event, _now);
+
+
+        }
+        if (event instanceof Solicitation) {
+            System.out.println("Router recieved solictiation message from: " + ((Message) event).source().networkId() + "." + ((Message) event).source().nodeId());
+            //send() send advertisement
         }
     }
 
     public void networkChanger(NetworkAddr homeAddress, NetworkAddr careOfAddress){
         routingTable.put(homeAddress, careOfAddress);
-        System.out.println("fan");
+        System.out.println("networkChan" +
+                "ger Test");
         System.out.println(routingTable);
 
+    }
+
+    public int getFreeInterface() {
+        for (int i = 0; i < _routingTable.length; i++) {
+            if (_routingTable[i]!=null) {
+                return i;
+            }
+        }
+        return -1;
     }
 
 

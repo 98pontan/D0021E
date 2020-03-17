@@ -1,10 +1,25 @@
 package Sim;
 
-public class BindingACK extends Message {
 
-	BindingACK(NetworkAddr from, NetworkAddr to, int seq) {
-		super(from, to, seq);
-		// TODO Auto-generated constructor stub
+public class BindingACK implements Event {
+
+	private NetworkAddr careOfAddress;
+	private NetworkAddr homeAddress;
+
+	BindingACK(NetworkAddr careOfAddress, NetworkAddr homeAddress) {
+		this.careOfAddress = careOfAddress;
+		this.homeAddress = homeAddress;
 	}
 
+	public void entering(SimEnt locale) {
+
+	}
+
+	public NetworkAddr getCareOfAddress() {
+		return careOfAddress;
+	}
+
+	public NetworkAddr getHomeAddress() {
+		return homeAddress;
+	}
 }

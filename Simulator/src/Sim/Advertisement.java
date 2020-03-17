@@ -1,6 +1,6 @@
 package Sim;
 
-public class Solicitation implements Event {
+public class Advertisement implements Event {
 
 
 	@Override

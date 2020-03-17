@@ -7,6 +7,9 @@ public class TableEntry {
 
 	private SimEnt _link;
 	private SimEnt _node;
+	public TableEntry() {
+
+	}
 	
 	TableEntry(SimEnt link, SimEnt node)
 	{

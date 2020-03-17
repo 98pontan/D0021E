@@ -75,11 +75,13 @@ public class Node extends SimEnt {
 	public void newNetworkAddress(NetworkAddr careOfAddress) {
 		_careOfAddress = careOfAddress;
 	}
-
+	/*
 	protected void solicit() {
 		System.out.println(this.toString() + " Solicitation request sent");
 		send(_peer, new Solicitation(this._id, 0), 0);
 	}
+
+	 */
 	
 	protected void changeRouterAfter(int NumberOfMessages, HomeAgent fromRouter, HomeAgent nextRouter) {
 		_nextRouter = nextRouter;
@@ -109,14 +111,26 @@ public class Node extends SimEnt {
 				}
 				else if (_sentmsg == _changeRouterAfter) {
 					send(_peer, new BindingUpdate(_careOfAddress, _id), 0);
+					//send(_peer, new Solicitation(), 0);
 					System.out.println("Change router after ACCESSED");
 				}
 			}
 		}
-		if (ev instanceof Message)
+		else if (ev instanceof Message)
 		{
 			System.out.println("Node "+_id.networkId()+ "." + _id.nodeId() +" receives message with seq: "+((Message) ev).seq() + " at time "+SimEngine.getTime());
-
 		}
+		else if (ev instanceof Advertisement) {
+			send(_peer, new BindingUpdate(_careOfAddress, _id), 0);
+		}
+
 	}
+
+
+	public void setupLink(HomeAgent routeNode) {
+		Link link = new Link();
+		this.setPeer(link);
+		routeNode.connectInterface(routeNode.getFreeInterface(), link, this);
+	}
+
 }
