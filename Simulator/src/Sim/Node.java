@@ -61,8 +61,8 @@ public class Node extends SimEnt {
 
 	/* Router variables */
 	private int _changeRouterAfter;
-	private HomeAgent _nextRouter;
-	private HomeAgent _fromRouter;
+	private Router _nextRouter;
+	private Router _fromRouter;
 	
 	void moveInterfaceAfter(int desiredInterface, int numberOfMessages, int olderInterface) {
 		_changeInterfaceAfter = numberOfMessages;
@@ -83,7 +83,7 @@ public class Node extends SimEnt {
 
 	 */
 	
-	protected void changeRouterAfter(int NumberOfMessages, HomeAgent fromRouter, HomeAgent nextRouter) {
+	protected void changeRouterAfter(int NumberOfMessages, Router fromRouter, Router nextRouter) {
 		_nextRouter = nextRouter;
 		_changeRouterAfter = NumberOfMessages;
 		_fromRouter = fromRouter;
@@ -110,6 +110,7 @@ public class Node extends SimEnt {
 					System.out.println("Node " + _id.networkId() + "."+_id.nodeId() + "tries to change interface to " + _desiredInterface);
 				}
 				else if (_sentmsg == _changeRouterAfter) {
+					//send(_peer, new NodeInterfaceChange(this, 4, (Link) _peer), 0);
 					send(_peer, new BindingUpdate(_careOfAddress, _id), 0);
 					//send(_peer, new Solicitation(), 0);
 					System.out.println("Change router after ACCESSED");
