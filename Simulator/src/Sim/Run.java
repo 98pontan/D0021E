@@ -36,17 +36,18 @@ public class Run {
 		routeNode1.connectInterface(0, link3, routeNode);
 
 		routeNode.connectInterface(1, link1, host1);
-		routeNode.connectInterface(1, link2, host2);
+		routeNode1.connectInterface(1, link2, host2);
 		//routeNode.printInterfaces();
 
 		// Generate some traffic
 		//host1.moveInterfaceAfter(3, 2, 0);
-		host1.changeRouterAfter(4, routeNode, routeNode1);
+		//host1.changeRouterAfter(4, routeNode, routeNode1);
 		
 		//routeNode.changeInterface(3, 1);
 		//routeNode.printInterfaces();
 
-		host1.StartSending(2, 1, 10, 6, 1);
+		host1.StartSending(2, 1, 3, 6, 1);
+		//host2.StartSending(1, 1, 3, 6, 1);
 
 
 		// Start the simulation engine and of we go!

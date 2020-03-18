@@ -19,6 +19,10 @@ public class NetworkAddr {
 	{
 		return _networkId;
 	}
+
+	public boolean compare(NetworkAddr address) {
+		return (this._networkId == address._networkId) && (this._nodeId == address._nodeId);
+	}
 	
 	public int nodeId()
 	{

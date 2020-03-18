@@ -70,11 +70,6 @@ public class Node extends SimEnt {
 		_olderInterface = olderInterface;
 	}
 
-	private NetworkAddr _careOfAddress;
-	
-	public void newNetworkAddress(NetworkAddr careOfAddress) {
-		_careOfAddress = careOfAddress;
-	}
 	/*
 	protected void solicit() {
 		System.out.println(this.toString() + " Solicitation request sent");
@@ -110,8 +105,11 @@ public class Node extends SimEnt {
 					System.out.println("Node " + _id.networkId() + "."+_id.nodeId() + "tries to change interface to " + _desiredInterface);
 				}
 				else if (_sentmsg == _changeRouterAfter) {
-					//send(_peer, new NodeInterfaceChange(this, 4, (Link) _peer), 0);
-					send(_peer, new BindingUpdate(_careOfAddress, _id), 0);
+					send(_peer, new NodeInterfaceChange(this, 4, (Link) _peer), 0);
+					//HARDCODED PLS CHANGE
+					NetworkAddr careOfAddress=new NetworkAddr(5, 5);
+					setupLink(_nextRouter);
+					send(_peer, new BindingUpdate(careOfAddress, _id), 0);
 					//send(_peer, new Solicitation(), 0);
 					System.out.println("Change router after ACCESSED");
 				}
@@ -121,9 +119,12 @@ public class Node extends SimEnt {
 		{
 			System.out.println("Node "+_id.networkId()+ "." + _id.nodeId() +" receives message with seq: "+((Message) ev).seq() + " at time "+SimEngine.getTime());
 		}
+		/*
 		else if (ev instanceof Advertisement) {
 			send(_peer, new BindingUpdate(_careOfAddress, _id), 0);
 		}
+
+		 */
 
 	}
 
