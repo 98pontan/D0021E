@@ -23,6 +23,15 @@ public class Link extends SimEnt{
 			_connectorB=connectTo;
 	}
 
+	public void removeConnector(SimEnt entity) {
+		if (_connectorA == entity) {
+			_connectorA = null;
+		}
+		else if(_connectorB == entity) {
+			_connectorB = null;
+		}
+	}
+
 	// Called when a message enters the link
 	
 	public void recv(SimEnt src, Event ev)

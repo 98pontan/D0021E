@@ -105,11 +105,12 @@ public class Node extends SimEnt {
 					System.out.println("Node " + _id.networkId() + "."+_id.nodeId() + "tries to change interface to " + _desiredInterface);
 				}
 				else if (_sentmsg == _changeRouterAfter) {
-					send(_peer, new NodeInterfaceChange(this, 4, (Link) _peer), 0);
+					//send(_peer, new NodeInterfaceChange(this, 4, (Link) _peer), 0);
 					//HARDCODED PLS CHANGE
-					NetworkAddr careOfAddress=new NetworkAddr(5, 5);
-					setupLink(_nextRouter);
-					send(_peer, new BindingUpdate(careOfAddress, _id), 0);
+					NetworkAddr careOfAddress=new NetworkAddr(2, 5);
+					setupLink(_fromRouter,_nextRouter);
+					send(_peer, new BindingUpdate(careOfAddress, getAddr()), 0);
+
 					//send(_peer, new Solicitation(), 0);
 					System.out.println("Change router after ACCESSED");
 				}
@@ -128,11 +129,14 @@ public class Node extends SimEnt {
 
 	}
 
-
-	public void setupLink(Router routeNode) {
+	public void setupLink(Router fromRouter,Router nextRouter) {
+		fromRouter.disconnectInterface(getAddr());
 		Link link = new Link();
 		this.setPeer(link);
-		routeNode.connectInterface(routeNode.getFreeInterface(), link, this);
+		//SimEnt address = fromRouter.getInterface(this.getAddr().);
+		//System.out.println(address);
+		nextRouter.connectInterface(nextRouter.getFreeInterface(), link, this);
 	}
+
 
 }
