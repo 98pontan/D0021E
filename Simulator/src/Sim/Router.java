@@ -25,7 +25,18 @@ public class Router extends SimEnt {
     public int getRouterID() {
         return this.routerID;
     }
-
+    
+    public void advertise() {
+    	
+    	System.out.println("Now sending advertisement message to all connected interfaces");
+    	
+    	for(RouteTableEntry i: _routingTable) {
+    		if(i == null) {
+    			continue;
+    		}
+    		send(i.link(), new Advertisement(), _now);
+    	}
+    }
     // This method connects links to the router and also informs the
     // router of the host connects to the other end of the link
 
