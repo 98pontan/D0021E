@@ -38,37 +38,29 @@ public class Router extends SimEnt {
         ((Link) link).setConnector(this);
     }
 
+    public void disconnectInterface(NetworkAddr networkAddr) {
+        for (int i = 0; i < _interfaces; i++)
+            if (_routingTable[i] != null) {
+                SimEnt dev = _routingTable[i].node();
+                if (dev instanceof Node) {
+                    Node node = (Node)dev;
+                    if (node.getAddr().compare(networkAddr)) {
+                        _routingTable[i] = null;
+                    }
+                } else if (dev instanceof Router) {
+                    Router router = (Router)dev;
+                    if (router.getRouterID() == networkAddr.networkId()) {
+                        _routingTable[i] = null;
+                    }
+                }
+            }
+    }
+
 
     // This method searches for an entry in the routing table that matches
     // the network number in the destination field of a messages. The link
     // represents that network number is returned
-/*
 
-    SimEnt getInterface(int networkAddress)
-    {
-        SimEnt routerInterface=null;
-        for(int i=0; i<_interfaces; i++)
-            if (_routingTable[i] != null)
-            {
-
-                if (_routingTable[i].node() instanceof Node) {
-                    if (((Node) _routingTable[i].node()).getAddr().networkId() == networkAddress)
-                    {
-                        routerInterface = _routingTable[i].link();
-                    }
-                }
-                else if (_routingTable[i].node() instanceof Router) {
-                    if (((Router) _routingTable[i].node()).getRouterID() == networkAddress)
-                    {
-                        return _routingTable[i].link();
-                    }
-                }
-
-            }
-        return routerInterface;
-    }
-
- */
 /*
     protected SimEnt getInterface(int networkAddress) {
         SimEnt routerInterface = null;
@@ -107,8 +99,6 @@ public class Router extends SimEnt {
                     }
                 }
             }
-
-        // not found
         return null;
     }
 
@@ -117,8 +107,20 @@ public class Router extends SimEnt {
 
     public void recv(SimEnt source, Event event) {
         if (event instanceof BindingUpdate) {
+            /*
+            Node node = (Node)source;
+            Router router = (Router)this;
             // call function that changes network address
             System.out.println(((BindingUpdate) event).getHomeAddress());
+
+
+            Link link = new Link();
+            node.setPeer(link);
+
+            router.connectInterface(getFreeInterface(), link, node);
+
+             */
+
             networkChanger(((BindingUpdate) event).getHomeAddress(), ((BindingUpdate) event).getCareOfAddress());
 
         }
@@ -130,7 +132,7 @@ public class Router extends SimEnt {
             Message msg = (Message)event;
             NetworkAddr msource = msg.source();
             NetworkAddr mdestination = msg.destination();
-            NetworkAddr careOfAddress = homeAgent.getCoaAddress(mdestination);
+            NetworkAddr careOfAddress = homeAgent.getCoaAddress(msource);
 
             if (careOfAddress != null) {
                 // tunnel message to the care-of address
@@ -158,8 +160,9 @@ public class Router extends SimEnt {
         homeAgent.newAddress(homeAddress, careOfAddress);
     }
 
-    public void changeInterface(NetworkAddr oldInterface, int newInterfaceNumber){
 
+    //FIXA FUNKTION
+    public void changeInterface(NetworkAddr oldInterface, int newInterfaceNumber){
         if(_routingTable[newInterfaceNumber] != null){
             System.out.println("!! Interface occupied!");
             return;
@@ -182,6 +185,7 @@ public class Router extends SimEnt {
     }
 
     public void printInterfaces() {
+        System.out.println("Router ID: " + getRouterID());
         for(int i = 0; i <_routingTable.length; i++) {
             if(_routingTable[i]!=null) {
                 if(_routingTable[i].node() instanceof Node){
@@ -197,8 +201,8 @@ public class Router extends SimEnt {
         }
     }
     public int getFreeInterface() {
-        for (int i = 0; i < _routingTable.length; i++) {
-            if (_routingTable[i]!=null) {
+        for (int i = 1; i < _routingTable.length; i++) {
+            if (_routingTable[i]==null) {
                 return i;
             }
         }

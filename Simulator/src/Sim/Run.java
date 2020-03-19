@@ -37,16 +37,17 @@ public class Run {
 
 		routeNode.connectInterface(1, link1, host1);
 		routeNode1.connectInterface(1, link2, host2);
-		//routeNode.printInterfaces();
+		routeNode.printInterfaces();
+		routeNode1.printInterfaces();
 
 		// Generate some traffic
 		//host1.moveInterfaceAfter(3, 2, 0);
-		//host1.changeRouterAfter(4, routeNode, routeNode1);
+		host1.changeRouterAfter(2, routeNode, routeNode1);
 		
 		//routeNode.changeInterface(3, 1);
 		//routeNode.printInterfaces();
 
-		host1.StartSending(2, 1, 3, 6, 1);
+		host1.StartSending(2, 1, 6, 6, 1);
 		//host2.StartSending(1, 1, 3, 6, 1);
 
 
