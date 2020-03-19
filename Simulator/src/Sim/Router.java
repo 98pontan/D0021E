@@ -84,15 +84,12 @@ public class Router extends SimEnt {
 
                 if (dev instanceof Node) {
                     Node node = (Node)dev;
-
-                    System.err.println(node.getAddr());
                     if (node.getAddr().compare(addr)) {
                         routerInterface = _routingTable[i].link();
                         return routerInterface;
                     }
                 } else if (dev instanceof Router) {
                     Router router = (Router)dev;
-
                     if (router.getRouterID() == addr.networkId()) {
                         routerInterface = _routingTable[i].link();
                         return routerInterface;
@@ -107,6 +104,13 @@ public class Router extends SimEnt {
 
     public void recv(SimEnt source, Event event) {
         if (event instanceof BindingUpdate) {
+            NetworkAddr homeAddress = ((BindingUpdate) event).getHomeAddress();
+            NetworkAddr careOfAddress = ((BindingUpdate) event).getCareOfAddress();
+            Node node = ((BindingUpdate) event).getNode();
+            Router nextRouter = ((BindingUpdate) event).getNextRouter();
+
+          //  this.disconnectInterface(node._id);
+            node._id = new NetworkAddr(nextRouter.getRouterID(), 5);
             /*
             Node node = (Node)source;
             Router router = (Router)this;
@@ -118,10 +122,17 @@ public class Router extends SimEnt {
             node.setPeer(link);
 
             router.connectInterface(getFreeInterface(), link, node);
-
              */
 
-            networkChanger(((BindingUpdate) event).getHomeAddress(), ((BindingUpdate) event).getCareOfAddress());
+
+            Link link = new Link();
+            link.setConnector(node);
+            nextRouter.printInterfaces();
+            nextRouter.connectInterface(nextRouter.getFreeInterface(),link,node);
+            nextRouter.printInterfaces();
+
+            homeAgent.newAddress(homeAddress.nodeId(), node._id);
+            //networkChanger(((BindingUpdate) event).getHomeAddress(), node.getAddr());
 
         }
 
@@ -132,7 +143,7 @@ public class Router extends SimEnt {
             Message msg = (Message)event;
             NetworkAddr msource = msg.source();
             NetworkAddr mdestination = msg.destination();
-            NetworkAddr careOfAddress = homeAgent.getCoaAddress(msource);
+            NetworkAddr careOfAddress = homeAgent.getCoaAddress(mdestination.nodeId());
 
             if (careOfAddress != null) {
                 // tunnel message to the care-of address
@@ -156,8 +167,36 @@ public class Router extends SimEnt {
         }
     }
 
+    private int newNodeId() {
+        int nid = 0;
+        while (true) {
+            boolean taken = false;
+            for (RouteTableEntry entry: _routingTable) {
+                if (entry == null) {
+                    continue;
+                }
+
+                SimEnt dev = entry.node();
+
+                if (dev instanceof Node) {
+                    Node node = (Node)dev;
+
+                    if (node._id.nodeId() == nid) {
+                        taken = true;
+                        break; // try another id
+                    }
+                }
+            }
+
+            if (!taken) {
+                return nid;
+            }
+        }
+    }
+
+
     public void networkChanger(NetworkAddr homeAddress, NetworkAddr careOfAddress) {
-        homeAgent.newAddress(homeAddress, careOfAddress);
+        homeAgent.newAddress(homeAddress.nodeId(), careOfAddress);
     }
 
 
