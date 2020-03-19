@@ -19,6 +19,7 @@ public class Router extends SimEnt {
         this._routingTable = new RouteTableEntry[interfaces];
         this._interfaces = interfaces;
         this.routerID = routerID;
+        setnetId(routerID, 0);
         this.homeAgent = new HomeAgent();
     }
 
@@ -29,7 +30,7 @@ public class Router extends SimEnt {
     // This method connects links to the router and also informs the
     // router of the host connects to the other end of the link
 
-    public void connectInterface(int interfaceNumber, SimEnt link, SimEnt node) {
+    public void connectInterface(int interfaceNumber, SimEnt link , SimEnt node) {
         if (interfaceNumber < _interfaces) {
             _routingTable[interfaceNumber] = new RouteTableEntry(link, node);
         } else
@@ -54,7 +55,9 @@ public class Router extends SimEnt {
                     }
                 }
             }
-    }
+     }
+    
+    
 
 
     // This method searches for an entry in the routing table that matches
@@ -86,6 +89,7 @@ public class Router extends SimEnt {
                     Node node = (Node)dev;
 
                     System.err.println(node.getAddr());
+                    
                     if (node.getAddr().compare(addr)) {
                         routerInterface = _routingTable[i].link();
                         return routerInterface;

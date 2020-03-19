@@ -1,17 +1,9 @@
 package Sim;
 
-public class Advertisement implements Event {
-	protected NetworkAddr _adAddr;
+public class Advertisement extends Message {
 	
-	protected Advertisement(NetworkAddr adAddr){
-		this._adAddr = adAddr; 
-	}
-	
-	protected NetworkAddr get_adAddr() {
-		return _adAddr;
-	}
-	@Override
-	public void entering(SimEnt locale) {
-
+	Advertisement(NetworkAddr from, NetworkAddr to, int seq) {
+		super(from, to, seq);
+		// TODO Auto-generated constructor stub
 	}
 }
