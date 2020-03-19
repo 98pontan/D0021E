@@ -108,8 +108,8 @@ public class Node extends SimEnt {
 					//send(_peer, new NodeInterfaceChange(this, 4, (Link) _peer), 0);
 					//HARDCODED PLS CHANGE
 					NetworkAddr careOfAddress=new NetworkAddr(2, 5);
-					setupLink(_fromRouter,_nextRouter);
-					send(_peer, new BindingUpdate(careOfAddress, getAddr()), 0);
+				//	setupLink(_fromRouter,_nextRouter);
+					send(_peer, new BindingUpdate(getAddr(), this, _nextRouter), 0);
 
 					//send(_peer, new Solicitation(), 0);
 					System.out.println("Change router after ACCESSED");

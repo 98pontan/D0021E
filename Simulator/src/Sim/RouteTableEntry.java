@@ -6,25 +6,7 @@ package Sim;
 
 public class RouteTableEntry extends TableEntry{
 
-	RouteTableEntry(NetworkAddr netAddress, SimEnt link) {
-		super(netAddress, link);
-		// TODO Auto-generated constructor stub
-	}
 	
-	public SimEnt link() {
-		return super.link();
-	}
-	
-	public int node() {
-		return super.node();
-	}
-	
-	public int netAddress() {
-		return super.netAddress();
-	}
-
-	
-/*
 	RouteTableEntry(SimEnt link, SimEnt node)
 	{
 		super(link, node);
@@ -40,6 +22,6 @@ public class RouteTableEntry extends TableEntry{
 		return super.node();
 	}
 	
-	*/
+	
 
 }
