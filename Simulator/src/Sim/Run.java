@@ -15,7 +15,7 @@ public class Run {
 		// Create two end hosts that will be
 		// communicating via the router
 		Node host1 = new Node(1,1);
-		Node host2 = new Node(1, 2);
+		Node host2 = new Node(2, 1);
 
 		//Connect links to hosts
 		host1.setPeer(link1);
@@ -36,16 +36,16 @@ public class Run {
 		routeNode1.connectInterface(0, link3, routeNode);
 
 		routeNode.connectInterface(1, link1, host1);
-		routeNode.connectInterface(2, link2, host2);
+		routeNode1.connectInterface(1, link2, host2);
 		routeNode.printInterfaces();
 		routeNode1.printInterfaces();
 
 		// Generate some traffic
 		//host1.moveInterfaceAfter(3, 2, 0);
 		//host1.StartSending(2, 1, 6, 6, 1);
-		host1.StartSending(1, 2, 3, 6, 1);
-		host2.StartSending(1, 1, 3, 6, 1);
-		host2.changeRouterAfter(3, routeNode, routeNode1);
+		host1.StartSending(2, 1, 5, 6, 1);
+		host2.StartSending(1, 1, 5, 6, 1);
+		host2.changeRouterAfter(3, routeNode1, routeNode);
 		
 		//routeNode.changeInterface(3, 1);
 		//routeNode.printInterfaces();

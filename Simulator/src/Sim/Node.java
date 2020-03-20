@@ -105,10 +105,7 @@ public class Node extends SimEnt {
 					System.out.println("Node " + _id.networkId() + "."+_id.nodeId() + "tries to change interface to " + _desiredInterface);
 				}
 				else if (_sentmsg == _changeRouterAfter) {
-					//send(_peer, new NodeInterfaceChange(this, 4, (Link) _peer), 0);
-					//HARDCODED PLS CHANGE
-					NetworkAddr careOfAddress=new NetworkAddr(2, 5);
-				//	setupLink(_fromRouter,_nextRouter);
+					send(_nextRouter, new Solicitation(this.getAddr()), 0);
 					send(_peer, new BindingUpdate(getAddr(), this, _nextRouter), 0);
 
 					//send(_peer, new Solicitation(), 0);
@@ -116,26 +113,17 @@ public class Node extends SimEnt {
 				}
 			}
 		}
-		else if (ev instanceof Message)
+		if (ev instanceof Message)
 		{
 			System.out.println("Node "+_id.networkId()+ "." + _id.nodeId() +" receives message with seq: "+((Message) ev).seq() + " at time "+SimEngine.getTime());
 		}
-		/*
-		else if (ev instanceof Advertisement) {
-			send(_peer, new BindingUpdate(_careOfAddress, _id), 0);
+
+		if (ev instanceof Advertisement) {
+			System.out.println("Node "+_id.networkId()+ "." + _id.nodeId() + " recieved advertisement from Router ID: " + ((Advertisement) ev).getRouter().getRouterID());
+			//send(_peer, new BindingUpdate(_careOfAddress, _id), 0);
 		}
 
-		 */
 
-	}
-
-	public void setupLink(Router fromRouter,Router nextRouter) {
-		fromRouter.disconnectInterface(getAddr());
-		Link link = new Link();
-		this.setPeer(link);
-		//SimEnt address = fromRouter.getInterface(this.getAddr().);
-		//System.out.println(address);
-		nextRouter.connectInterface(nextRouter.getFreeInterface(), link, this);
 	}
 
 
