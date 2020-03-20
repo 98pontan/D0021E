@@ -43,8 +43,8 @@ public class Run {
 		// Generate some traffic
 		//host1.moveInterfaceAfter(3, 2, 0);
 		//host1.StartSending(2, 1, 6, 6, 1);
-		host1.StartSending(2, 1, 5, 6, 1);
-		host2.StartSending(1, 1, 5, 6, 1);
+		host1.StartSending(2, 1, 6, 6, 1);
+		host2.StartSending(1, 1, 3, 6, 1);
 		host2.changeRouterAfter(3, routeNode1, routeNode);
 		
 		//routeNode.changeInterface(3, 1);

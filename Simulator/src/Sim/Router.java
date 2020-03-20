@@ -62,7 +62,7 @@ public class Router extends SimEnt {
                 SimEnt entity = _routingTable[i].node();
                 if (entity instanceof Node) {
                     Node node = (Node) entity;
-                    System.out.println("Router: " + getRouterID() + " sends advertisement to " + node._id);
+                    System.out.println("Router: " + getRouterID() + " sends advertisement to " + node._id.networkId() + "." + node._id.nodeId());
                     send(node, new Advertisement(this), 0);
                 }
             }
@@ -73,20 +73,6 @@ public class Router extends SimEnt {
     // the network number in the destination field of a messages. The link
     // represents that network number is returned
 
-/*
-    protected SimEnt getInterface(int networkAddress) {
-        SimEnt routerInterface = null;
-        for (int i = 0; i < _interfaces; i++)
-            if (_routingTable[i] != null) {
-                if (((Node) _routingTable[i].node()).getAddr().networkId() == networkAddress) {
-                    routerInterface = _routingTable[i].link();
-                }
-            }
-        return routerInterface;
-    }
-
-
- */
 
     public SimEnt getInterface(NetworkAddr addr) {
         SimEnt routerInterface = null;
@@ -115,25 +101,17 @@ public class Router extends SimEnt {
 
     public void recv(SimEnt source, Event event) {
         if (event instanceof BindingUpdate) {
+
             NetworkAddr homeAddress = ((BindingUpdate) event).getHomeAddress();
-            //NetworkAddr careOfAddress = ((BindingUpdate) event).getCareOfAddress();
             Node node = ((BindingUpdate) event).getNode();
             Router nextRouter = ((BindingUpdate) event).getNextRouter();
             disconnectInterface(homeAddress);                            // ACTIVATE?
-
-            int adder=1;
-            node._id = new NetworkAddr(nextRouter.getRouterID(), 1);
-            while(isAddressUnique(node._id, nextRouter)!=true) {
-                node._id = new NetworkAddr(nextRouter.getRouterID(), adder);
-                adder++;
-            }
+            getUniqueAddress(nextRouter, node);
             Link link = new Link();
             link.setConnector(node);
-            //nextRouter.printInterfaces();
             nextRouter.connectInterface(nextRouter.getFreeInterface(),link,node);
-            //nextRouter.printInterfaces();
             homeAgent.newAddress(homeAddress.nodeId(), node._id);
-            //networkChanger(((BindingUpdate) event).getHomeAddress(), node.getAddr());
+            System.out.println("Binding complete, Node: " + homeAddress.networkId() + "." + homeAddress.nodeId() + " switched router and got new care of address, Node: " + node._id.networkId() + "." + node._id.nodeId());
 
         }
 
@@ -147,30 +125,38 @@ public class Router extends SimEnt {
 
             if (careOfAddress != null && mdestination.networkId() != msource.networkId()) {
                 // tunnel message to the care-of address
-                System.out.println("Home Agent is tunneling message from " + mdestination.networkId() + "." + mdestination.nodeId() + " to " + careOfAddress.networkId() + "." + careOfAddress.nodeId() + " with seq number " + msg.seq());
+                System.out.println("Router: " + this.routerID + " home agent is tunneling message from " + mdestination.networkId() + "." + mdestination.nodeId() + " to " + careOfAddress.networkId() + "." + careOfAddress.nodeId() + " with seq number " + msg.seq());
                 mdestination = careOfAddress;
                 msg.setDestination(careOfAddress);
             }
 
 
 
-            System.out.println("Router " + this.getRouterID() + " handles packet with seq: " + msg.seq() + " from node: " + msource);
+            System.out.println("Router " + this.getRouterID() + " handles packet with seq: " + msg.seq() + " from node: " + msource.networkId() + "." + msource.nodeId());
             SimEnt sendNext = getInterface(mdestination);
             if (sendNext == null) {
                 System.err.println("Router " + this.getRouterID() + ": host " + mdestination + " is unreachable");
             } else {
-                System.out.println("Router sends packet to node: " + mdestination.networkId() + "." + mdestination.nodeId() + "with seq number " + msg.seq());
+                System.out.println("Router: " + this.getRouterID() + " sends packet to node: " + mdestination.networkId() + "." + mdestination.nodeId() + " with seq number " + msg.seq());
                 send(sendNext, event, _now);
             }
         }
         if (event instanceof Solicitation) {
-            System.out.println("Router ID: " + this.getRouterID() + " recieved solictiation message from: " + ((Solicitation) event).getAddress().networkId() + "." + ((Solicitation) event).getAddress().nodeId());
+            System.out.println("Router : " + this.getRouterID() + " recieved solictiation message from: " + ((Solicitation) event).getAddress().networkId() + "." + ((Solicitation) event).getAddress().nodeId());
             advertise();
         }
     }
 
+    public void getUniqueAddress(Router nextRouter, Node node) {
+        int adder=1;
+        node._id = new NetworkAddr(nextRouter.getRouterID(), 1);
+        while(isAddressUnique(node._id, nextRouter)!=true) {
+            node._id = new NetworkAddr(nextRouter.getRouterID(), adder);
+            adder++;
+        }
+    }
+
     public boolean isAddressUnique(NetworkAddr addr, Router nextRouter) {
-        //SimEnt routerInterface = null;
         for (int i = 0; i < nextRouter._interfaces; i++)
             if (nextRouter._routingTable[i] != null) {
                 SimEnt dev = nextRouter._routingTable[i].node();
@@ -191,8 +177,6 @@ public class Router extends SimEnt {
             RouteTableEntry route = _routingTable[oldInterfaceNumber];
             _routingTable[oldInterfaceNumber] = null;
             _routingTable[newInterfaceNumber] = route;
-            //printInterfaces();
-
         } else {
             System.out.println("The port doesn't exist or is already occupied");
         }

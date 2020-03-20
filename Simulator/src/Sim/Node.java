@@ -35,7 +35,7 @@ public class Node extends SimEnt {
 		return _id;
 	}
 
-//**********************************************************************************	
+//**********************************************************************************
 	// Just implemented to generate some traffic for demo.
 	// In one of the labs you will create some traffic generators
 
@@ -63,29 +63,21 @@ public class Node extends SimEnt {
 	private int _changeRouterAfter;
 	private Router _nextRouter;
 	private Router _fromRouter;
-	
+
 	void moveInterfaceAfter(int desiredInterface, int numberOfMessages, int olderInterface) {
 		_changeInterfaceAfter = numberOfMessages;
 		_desiredInterface = desiredInterface;
 		_olderInterface = olderInterface;
 	}
 
-	/*
-	protected void solicit() {
-		System.out.println(this.toString() + " Solicitation request sent");
-		send(_peer, new Solicitation(this._id, 0), 0);
-	}
-
-	 */
-	
 	protected void changeRouterAfter(int NumberOfMessages, Router fromRouter, Router nextRouter) {
 		_nextRouter = nextRouter;
 		_changeRouterAfter = NumberOfMessages;
 		_fromRouter = fromRouter;
 	}
-	
-	
-//**********************************************************************************	
+
+
+//**********************************************************************************
 
 	// This method is called upon that an event destined for this node triggers.
 
@@ -105,10 +97,9 @@ public class Node extends SimEnt {
 					System.out.println("Node " + _id.networkId() + "."+_id.nodeId() + "tries to change interface to " + _desiredInterface);
 				}
 				else if (_sentmsg == _changeRouterAfter) {
-					send(_nextRouter, new Solicitation(this.getAddr()), 0);
 					send(_peer, new BindingUpdate(getAddr(), this, _nextRouter), 0);
+					send(_nextRouter, new Solicitation(this.getAddr()), 5);
 
-					//send(_peer, new Solicitation(), 0);
 					System.out.println("Change router after ACCESSED");
 				}
 			}
@@ -120,7 +111,6 @@ public class Node extends SimEnt {
 
 		if (ev instanceof Advertisement) {
 			System.out.println("Node "+_id.networkId()+ "." + _id.nodeId() + " recieved advertisement from Router ID: " + ((Advertisement) ev).getRouter().getRouterID());
-			//send(_peer, new BindingUpdate(_careOfAddress, _id), 0);
 		}
 
 
