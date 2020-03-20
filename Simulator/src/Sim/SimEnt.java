@@ -4,12 +4,21 @@ package Sim;
 // need to inherit from this class
 
 public abstract class SimEnt {
+	protected NetworkAddr _id;
 	
 	protected SimEnt()
 	{	
 	}
 	
-
+	
+	public void assignNetworkAddr (int network, int node)
+	{
+		_id = new NetworkAddr(network, node);
+	}
+	
+	public NetworkAddr getNetworkAddr(){
+		return _id;
+	}
 	// Called when erasing an entity like node or link etc. The SimEngine is called in case
 	// that de-registration of the entity is needed 
 	

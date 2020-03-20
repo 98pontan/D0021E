@@ -34,7 +34,7 @@ public class Router extends SimEnt {
     		if(i == null) {
     			continue;
     		}
-    		send(i.link(), new Advertisement(, _interfaces), _now);
+    		send(i.link(), new Advertisement(_id, , 0), _now);
     	}
     }
     // This method connects links to the router and also informs the
