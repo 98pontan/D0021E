@@ -145,6 +145,11 @@ public class Router extends SimEnt {
             System.out.println("Router : " + this.getRouterID() + " recieved solictiation message from: " + ((Solicitation) event).getAddress().networkId() + "." + ((Solicitation) event).getAddress().nodeId());
             advertise();
         }
+        if (event instanceof LSA) {
+            //sendLSA();
+            LSA message = (LSA) event;
+            System.out.println("Router " + getRouterID() + " received LSA from " + "Router: " + message.getRouterID());
+        }
     }
 
     public void getUniqueAddress(Router nextRouter, Node node) {
@@ -206,4 +211,20 @@ public class Router extends SimEnt {
         }
         return -1;
     }
+
+    public void sendLSA() {
+        for (int i = 0; i < _interfaces; i++)
+            if (_routingTable[i] != null) {
+                SimEnt entity = _routingTable[i].node();
+                SimEnt link = _routingTable[i].link();
+                if (entity instanceof Router) {
+                    Router router = (Router) entity;
+                    WeightedLink linkerino = (WeightedLink) link;
+                    linkerino.getWeight();
+                    //System.out.println("Router: " + getRouterID() + " sends LSA to " + router.getRouterID());
+                    send(router, new LSA(getRouterID()), 0);
+                }
+            }
+    }
+
 }

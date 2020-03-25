@@ -8,9 +8,11 @@ public class Run {
 	public static void main (String [] args)
 	{
 		// Creates two links
-		Link link1 = new Link();
-		Link link2 = new Link();
-		Link link3 = new Link();
+		Link link1 = new WeightedLink(100);
+		Link link2 = new WeightedLink(100);
+		Link link3 = new WeightedLink(100);
+		Link link4 = new WeightedLink(100);
+		Link link5 = new WeightedLink(100);
 
 		// Create two end hosts that will be
 		// communicating via the router
@@ -31,14 +33,26 @@ public class Run {
 		// Creates home agent with 10 interfaces
 		Router routeNode = new Router(10, 1);
 		Router routeNode1 = new Router(10, 2);
+		Router routeNode2 = new Router(10, 3);
 		// Connects two interfaces
 		routeNode.connectInterface(0, link3, routeNode1);
 		routeNode1.connectInterface(0, link3, routeNode);
 
-		routeNode.connectInterface(1, link1, host1);
-		routeNode1.connectInterface(1, link2, host2);
+		routeNode.connectInterface(1, link4, routeNode2);
+		routeNode2.connectInterface(1, link4, routeNode);
+
+		routeNode1.connectInterface(2, link5, routeNode2);
+		routeNode2.connectInterface(2, link5, routeNode1);
+
+		routeNode.connectInterface(3, link1, host1);
+		routeNode1.connectInterface(3, link2, host2);
 		routeNode.printInterfaces();
 		routeNode1.printInterfaces();
+		routeNode2.printInterfaces();
+
+		routeNode.sendLSA();
+		routeNode1.sendLSA();
+		routeNode2.sendLSA();
 
 		// Generate some traffic
 		//host1.moveInterfaceAfter(3, 2, 0);

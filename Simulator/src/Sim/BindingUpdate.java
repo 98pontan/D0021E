@@ -7,7 +7,7 @@ public class BindingUpdate implements Event{
     private Router nextRouter;
 
     BindingUpdate(NetworkAddr homeAddress, Node node, Router nextRouter) {
-      //  this.careOfAddress = careOfAddress;
+        this.careOfAddress = careOfAddress;
         this.homeAddress = homeAddress;
         this.node = node;
         this.nextRouter = nextRouter;
