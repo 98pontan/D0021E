@@ -4,8 +4,11 @@ public class RouterInterfaceChanger extends Router {
 
     // When created, number of interfaces are defined
 
-    RouterInterfaceChanger(int interfaces) {
-        super(interfaces, 1); //NOT SUPPOSED TO BE LIKE THIS
+
+
+    //OUTDATED
+    RouterInterfaceChanger(int interfaces, LSDB lsdb) {
+        super(interfaces, 1, lsdb); //NOT SUPPOSED TO BE LIKE THIS
         this._interfaces = interfaces;
     }
 

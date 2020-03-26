@@ -15,7 +15,7 @@ public class Run {
 		Link link5 = new WeightedLink(100);
 
 		//TESTING LSDB
-		LSDB lsdb = new LSDB();
+		LSDB lsdb = new LSDB(3);
 
 		// Create two end hosts that will be
 		// communicating via the router
@@ -34,9 +34,9 @@ public class Run {
 		//Router routeNode = new Router(2);
 		
 		// Creates home agent with 10 interfaces
-		Router routeNode = new Router(10, 1);
-		Router routeNode1 = new Router(10, 2);
-		Router routeNode2 = new Router(10, 3);
+		Router routeNode = new Router(10, 1, lsdb);
+		Router routeNode1 = new Router(10, 2, lsdb);
+		Router routeNode2 = new Router(10, 3, lsdb);
 		// Connects two interfaces
 		routeNode.connectInterface(0, link3, routeNode1);
 		routeNode1.connectInterface(0, link3, routeNode);
@@ -82,9 +82,8 @@ public class Run {
 			routeNode.printInterfaces();
 			System.out.println("======================================");
 			routeNode1.printInterfaces();
-
-
-
+			System.out.println("======================================");
+			lsdb.printMatrix();
 
 		}
 		catch (Exception e)

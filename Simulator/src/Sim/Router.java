@@ -11,15 +11,17 @@ public class Router extends SimEnt {
     protected int _now = 0;
     private int routerID;
     private HomeAgent homeAgent;
+    protected LSDB lsdb;
 
 
     // When created, number of interfaces are defined
 
-    Router(int interfaces, int routerID) {
+    Router(int interfaces, int routerID, LSDB lsdb) {
         this._routingTable = new RouteTableEntry[interfaces];
         this._interfaces = interfaces;
         this.routerID = routerID;
         this.homeAgent = new HomeAgent();
+        this.lsdb = lsdb;
     }
 
     public int getRouterID() {
@@ -149,9 +151,14 @@ public class Router extends SimEnt {
             //sendLSA();
             LSA message = (LSA) event;
             System.out.println("Router " + getRouterID() + " received LSA from " + "Router: " + message.getRouterID() + " and link weight is " + message.getLinkWeight());
+            send(source, new LSAck(getRouterID(), message.getLinkWeight()), 0);
+
         }
         if (event instanceof LSAck) {
-
+            LSAck message = (LSAck) event;
+           // System.out.println("Router " + getRouterID() + " received LSAck from " + "Router: " + message.getRouterID());
+            lsdb.increaseX();
+            lsdb.addToMatrix(this.routerID, message.routerID, message.linkWeight);
         }
     }
 
