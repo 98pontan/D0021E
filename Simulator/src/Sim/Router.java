@@ -148,7 +148,10 @@ public class Router extends SimEnt {
         if (event instanceof LSA) {
             //sendLSA();
             LSA message = (LSA) event;
-            System.out.println("Router " + getRouterID() + " received LSA from " + "Router: " + message.getRouterID());
+            System.out.println("Router " + getRouterID() + " received LSA from " + "Router: " + message.getRouterID() + " and link weight is " + message.getLinkWeight());
+        }
+        if (event instanceof LSAck) {
+
         }
     }
 
@@ -219,10 +222,9 @@ public class Router extends SimEnt {
                 SimEnt link = _routingTable[i].link();
                 if (entity instanceof Router) {
                     Router router = (Router) entity;
-                    WeightedLink linkerino = (WeightedLink) link;
-                    linkerino.getWeight();
+                    WeightedLink weightedLink = (WeightedLink) link;
                     //System.out.println("Router: " + getRouterID() + " sends LSA to " + router.getRouterID());
-                    send(router, new LSA(getRouterID()), 0);
+                    send(router, new LSA(getRouterID(), weightedLink.getWeight()), 0);
                 }
             }
     }

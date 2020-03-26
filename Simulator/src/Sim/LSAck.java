@@ -1,9 +1,9 @@
 package Sim;
 
-public class LSA implements Event {
+public class LSAck implements Event {
     int routerID;
     int linkWeight;
-    LSA(int routerID, int linkWeight) {
+    LSAck(int routerID, int linkWeight) {
         this.routerID = routerID;
         this.linkWeight = linkWeight;
     }
@@ -15,8 +15,6 @@ public class LSA implements Event {
     public int getLinkWeight() {
         return linkWeight;
     }
-
-
     @Override
     public void entering(SimEnt locale) {
 

@@ -8,11 +8,14 @@ public class Run {
 	public static void main (String [] args)
 	{
 		// Creates two links
-		Link link1 = new WeightedLink(100);
-		Link link2 = new WeightedLink(100);
-		Link link3 = new WeightedLink(100);
+		Link link1 = new WeightedLink(30);
+		Link link2 = new WeightedLink(10);
+		Link link3 = new WeightedLink(3);
 		Link link4 = new WeightedLink(100);
 		Link link5 = new WeightedLink(100);
+
+		//TESTING LSDB
+		LSDB lsdb = new LSDB();
 
 		// Create two end hosts that will be
 		// communicating via the router
