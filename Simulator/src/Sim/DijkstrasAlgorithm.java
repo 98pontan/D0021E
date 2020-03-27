@@ -15,7 +15,7 @@ public class DijkstrasAlgorithm {
     // using adjacency matrix
     // representation
 
-    DijkstrasAlgorithm(int adjacencyMatrix[][])
+    DijkstrasAlgorithm(int adjacencyMatrix[][], int startingVertex)
     {
         /*
         int[][] adjacencyMatrix = {
@@ -25,9 +25,14 @@ public class DijkstrasAlgorithm {
                 { 0, 7, 5, 0} };
 
          */
-        dijkstra(adjacencyMatrix, 0);
+        dijkstra(adjacencyMatrix, startingVertex);
         System.out.println("");
-        System.out.println(myList);
+        //System.out.println(myList);
+
+    }
+
+    public ArrayList<ArrayList> getDijkstraTable() {
+        return myList;
     }
 
     private void dijkstra(int[][] adjacencyMatrix,

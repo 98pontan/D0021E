@@ -157,7 +157,6 @@ public class Router extends SimEnt {
         if (event instanceof LSAck) {
             LSAck message = (LSAck) event;
            // System.out.println("Router " + getRouterID() + " received LSAck from " + "Router: " + message.getRouterID());
-            lsdb.increaseX();
             lsdb.addToMatrix(this.routerID, message.routerID, message.linkWeight);
         }
     }
