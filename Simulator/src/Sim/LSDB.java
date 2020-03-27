@@ -62,5 +62,10 @@ public class LSDB {
                 .replace("],","\n").replace(",","\t| ")
                 .replaceAll("[\\[\\]]", " "));
     }
+    
+	public void cleanMatrix() {
+    	for( int i = 0; i < routingMatrix.length; i++ )
+    		   Arrays.fill(routingMatrix[i], 0);
+    }
 }
 
