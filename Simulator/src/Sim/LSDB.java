@@ -1,20 +1,19 @@
 package Sim;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /*
     Class to store the routing information based on Dijkstras algorithm. Class is shared between all the routers.
  */
 public class LSDB {
-    DijkstrasAlgorithm dijkstrasAlgorithm;
-    int numberOfRouters;
-    int numberOfLinks;
-    int[][] routingMatrix;
-    int flag = 0; //Flag for when to run dijkstra
-    Map<Integer, ArrayList> optimalRoute = new HashMap<Integer, ArrayList>();
+    private int numberOfInterfaces;
+    private DijkstrasAlgorithm dijkstrasAlgorithm;
+    private int numberOfRouters;
+    private int numberOfLinks;
+    private int[][] routingMatrix;
+    private int flag = 0; //Flag for when to run dijkstra
+    private Map<Integer, ArrayList> optimalRoute = new HashMap<Integer, ArrayList>();
+    private Set<Integer> linkedHashSet = new LinkedHashSet<>(); //delete?
 
     //Make non hardcoded pls!!!!!!!!!!
     LSDB(int numberOfRouters, int numberOfLinks) {
@@ -32,17 +31,34 @@ public class LSDB {
             { 6, 0, 0, 5},
             { 0, 7, 5, 0} };
 
+    public void increaseNumberOfInterfaces() {
+        numberOfInterfaces++;
+        System.out.println("RINKU NUYMBER " + numberOfInterfaces);
+    }
 
     public void addToMatrix(int sourceRouter, int destinationRouter, int value) {
         routingMatrix[sourceRouter-1][destinationRouter-1] = (int) Math.ceil(100.0/value); //Puts the routing paths and cost into an adjency matrix
         flag++;
-        if(flag == numberOfLinks*numberOfRouters) { //Very hardcoded atm, supposes that everyrouter has equal amount of links
+        if(flag == numberOfInterfaces) { //Very hardcoded atm, supposes that everyrouter has equal amount of links
             for (int x = 0; x < numberOfRouters; x++) {
                 dijkstrasAlgorithm = new DijkstrasAlgorithm(routingMatrix, x); //Runs dijkstras on the matrix
-                System.out.println(dijkstrasAlgorithm.getDijkstraTable());
+               // System.out.println(dijkstrasAlgorithm.getDijkstraTable());
                 optimalRoute.put(x+1, dijkstrasAlgorithm.getDijkstraTable()); //Puts dijkstras result into a hashmap
             }
         }
+    }
+
+    public ArrayList<Integer> getRoute(int sourceRouter, int destRouter) {
+        ArrayList<ArrayList> route = optimalRoute.get(sourceRouter);
+        int x = 0;
+        for (ArrayList i : route) {
+            if((int) (i.get(i.size() - 1)) == destRouter-1) {
+                System.out.println(route.get(x));
+                return route.get(x);
+            }
+            x++;
+        }
+        return optimalRoute.get(sourceRouter);
     }
 
     //DijkstrasAlgorithm dijkstrasAlgorithm = new DijkstrasAlgorithm(adjacencyMatrix, 1);

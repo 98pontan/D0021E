@@ -2,6 +2,7 @@ package Sim;
 
 // This class implements a simple router
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Router extends SimEnt {
@@ -76,23 +77,43 @@ public class Router extends SimEnt {
     // represents that network number is returned
 
 
-    public SimEnt getInterface(NetworkAddr addr) {
+    public SimEnt getInterface(NetworkAddr destAddr, NetworkAddr sourceAddr) {
+        ArrayList<Integer> route = lsdb.getRoute(sourceAddr.networkId(), destAddr.networkId());
+
         SimEnt routerInterface = null;
         for (int i = 0; i < _interfaces; i++)
             if (_routingTable[i] != null) {
                 SimEnt entity = _routingTable[i].node();
                 if (entity instanceof Node) {
                     Node node = (Node)entity;
-                    if (node.getAddr().compare(addr)) {
+                    if (node.getAddr().compare(destAddr)) {
                         routerInterface = _routingTable[i].link();
                         return routerInterface;
                     }
                 } else if (entity instanceof Router) {
                     Router router = (Router)entity;
-                    if (router.getRouterID() == addr.networkId()) {
-                        routerInterface = _routingTable[i].link();
-                        return routerInterface;
+                    //int x = route.get(getRouterID());
+
+                    int currentRouteIndex = route.indexOf(getRouterID()-1);
+                    if(currentRouteIndex < route.size()-1) {    //
+                        int x = route.get(currentRouteIndex+1); //to get the next router
+                        Router test = (Router) _routingTable[i].node();
+                        if(x == test.getRouterID()-1) {
+                            return _routingTable[i].link();
+                        }
                     }
+
+
+                    //if(x == _routingTable[i].node())
+//                    if(router.getRouterID() == route.get(router.getRouterID())) {
+//                        routerInterface = _routingTable[i].link();
+//                        return routerInterface;
+//                    }
+//                    if (router.getRouterID() == destAddr.networkId()) {
+//                        routerInterface = _routingTable[i].link();
+//                        return routerInterface;
+//                    }
+
                 }
             }
         return null;
@@ -135,7 +156,7 @@ public class Router extends SimEnt {
 
 
             System.out.println("Router " + this.getRouterID() + " handles packet with seq: " + msg.seq() + " from node: " + msource.networkId() + "." + msource.nodeId());
-            SimEnt sendNext = getInterface(mdestination);
+            SimEnt sendNext = getInterface(mdestination, msource);
             if (sendNext == null) {
                 System.err.println("Router " + this.getRouterID() + ": host " + mdestination + " is unreachable");
             } else {
@@ -227,10 +248,11 @@ public class Router extends SimEnt {
                 SimEnt entity = _routingTable[i].node();
                 SimEnt link = _routingTable[i].link();
                 if (entity instanceof Router) {
-                    Router router = (Router) entity;
+                    lsdb.increaseNumberOfInterfaces();
+                    Router nextRouter = (Router) entity;
                     WeightedLink weightedLink = (WeightedLink) link;
                     //System.out.println("Router: " + getRouterID() + " sends LSA to " + router.getRouterID());
-                    send(router, new LSA(getRouterID(), weightedLink.getWeight()), 0);
+                    send(nextRouter, new LSA(getRouterID(), weightedLink.getWeight()), 0);
                 }
             }
     }

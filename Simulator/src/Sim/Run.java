@@ -10,12 +10,9 @@ public class Run {
 		// Creates two links
 		Link link1 = new WeightedLink(30);
 		Link link2 = new WeightedLink(10);
-		Link link3 = new WeightedLink(3);
+		Link link3 = new WeightedLink(30);
 		Link link4 = new WeightedLink(100);
 		Link link5 = new WeightedLink(100);
-
-		System.out.println(Math.ceil(100.0/300));
-
 		//TESTING LSDB
 		LSDB lsdb = new LSDB(3, 2);
 
@@ -62,8 +59,8 @@ public class Run {
 		// Generate some traffic
 		//host1.moveInterfaceAfter(3, 2, 0);
 		//host1.StartSending(2, 1, 6, 6, 1);
-		host1.StartSending(2, 1, 6, 6, 1);
-		//host2.StartSending(1, 1, 3, 6, 1);
+		host1.StartSending(2, 1, 1, 6, 1);
+		//host2.StartSending(1, 1, 1, 6, 1);
 	//	host2.changeRouterAfter(3, routeNode1, routeNode);
 		
 		//routeNode.changeInterface(3, 1);

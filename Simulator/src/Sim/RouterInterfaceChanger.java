@@ -45,7 +45,7 @@ public class RouterInterfaceChanger extends Router {
  */
 
     // When messages are received at the router this method is called
-
+/*
     public void recv(SimEnt source, Event event) {
         if (event instanceof MoveInterfaceEvent) {
             changeInterface(((MoveInterfaceEvent) event)._newInterfaceNumber(), ((MoveInterfaceEvent) event)._oldInterface());
@@ -57,4 +57,6 @@ public class RouterInterfaceChanger extends Router {
             send(sendNext, event, _now);
         }
     }
+
+ */
 }

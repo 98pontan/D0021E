@@ -16,7 +16,6 @@ public class RouteTableEntry extends TableEntry{
 		return super.link();
 	}
 
-
 	public SimEnt node()
 	{
 		return super.node();
