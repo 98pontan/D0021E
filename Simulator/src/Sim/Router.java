@@ -13,6 +13,7 @@ public class Router extends SimEnt {
     private int routerID;
     private HomeAgent homeAgent;
     protected LSDB lsdb;
+    private boolean hasSentLSA;
 
 
     // When created, number of interfaces are defined
@@ -23,6 +24,10 @@ public class Router extends SimEnt {
         this.routerID = routerID;
         this.homeAgent = new HomeAgent();
         this.lsdb = lsdb;
+    }
+
+    public boolean hasSentLSA() {
+        return hasSentLSA;
     }
 
     public int getRouterID() {
@@ -91,9 +96,6 @@ public class Router extends SimEnt {
                         return routerInterface;
                     }
                 } else if (entity instanceof Router) {
-                    Router router = (Router)entity;
-                    //int x = route.get(getRouterID());
-
                     int currentRouteIndex = route.indexOf(getRouterID()-1);
                     if(currentRouteIndex < route.size()-1) {    //
                         int x = route.get(currentRouteIndex+1); //to get the next router
@@ -102,18 +104,6 @@ public class Router extends SimEnt {
                             return _routingTable[i].link();
                         }
                     }
-
-
-                    //if(x == _routingTable[i].node())
-//                    if(router.getRouterID() == route.get(router.getRouterID())) {
-//                        routerInterface = _routingTable[i].link();
-//                        return routerInterface;
-//                    }
-//                    if (router.getRouterID() == destAddr.networkId()) {
-//                        routerInterface = _routingTable[i].link();
-//                        return routerInterface;
-//                    }
-
                 }
             }
         return null;
@@ -172,13 +162,19 @@ public class Router extends SimEnt {
             //sendLSA();
             LSA message = (LSA) event;
             System.out.println("Router " + getRouterID() + " received LSA from " + "Router: " + message.getRouterID() + " and link weight is " + message.getLinkWeight());
+            //sendLSA();
+            //this.hasSentLSA = true;
+            if(!hasSentLSA()) {
+                sendLSA();
+            }
             send(source, new LSAck(getRouterID(), message.getLinkWeight()), 0);
 
         }
         if (event instanceof LSAck) {
             LSAck message = (LSAck) event;
-           // System.out.println("Router " + getRouterID() + " received LSAck from " + "Router: " + message.getRouterID());
+            System.out.println("Router " + getRouterID() + " received LSAck from " + "Router: " + message.getRouterID());
             lsdb.addToMatrix(this.routerID, message.routerID, message.linkWeight);
+
         }
     }
 
@@ -251,8 +247,12 @@ public class Router extends SimEnt {
                     lsdb.increaseNumberOfInterfaces();
                     Router nextRouter = (Router) entity;
                     WeightedLink weightedLink = (WeightedLink) link;
-                    //System.out.println("Router: " + getRouterID() + " sends LSA to " + router.getRouterID());
+                    System.out.println("Router: " + getRouterID() + " sends LSA to " + nextRouter.getRouterID());
                     send(nextRouter, new LSA(getRouterID(), weightedLink.getWeight()), 0);
+                    this.hasSentLSA = true;
+//                    if(!nextRouter.hasSentLSA()) {
+//                        send(nextRouter, new LSA(getRouterID(), weightedLink.getWeight()), 0);
+//                    }
                 }
             }
     }

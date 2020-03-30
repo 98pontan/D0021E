@@ -15,25 +15,15 @@ public class LSDB {
     private Map<Integer, ArrayList> optimalRoute = new HashMap<Integer, ArrayList>();
     private Set<Integer> linkedHashSet = new LinkedHashSet<>(); //delete?
 
-    //Make non hardcoded pls!!!!!!!!!!
     LSDB(int numberOfRouters, int numberOfLinks) {
         this.numberOfRouters = numberOfRouters;
         this.numberOfLinks = numberOfLinks;
         int[][] routingMatrix = new int[numberOfRouters][numberOfRouters];
         this.routingMatrix = routingMatrix;
     }
-    private int x=1; //delete
-
-    //delete
-    int[][] adjacencyMatrix = {
-            { 0, 5, 6, 0},
-            { 5, 0, 0, 7},
-            { 6, 0, 0, 5},
-            { 0, 7, 5, 0} };
 
     public void increaseNumberOfInterfaces() {
         numberOfInterfaces++;
-        System.out.println("RINKU NUYMBER " + numberOfInterfaces);
     }
 
     public void addToMatrix(int sourceRouter, int destinationRouter, int value) {
@@ -45,6 +35,8 @@ public class LSDB {
                // System.out.println(dijkstrasAlgorithm.getDijkstraTable());
                 optimalRoute.put(x+1, dijkstrasAlgorithm.getDijkstraTable()); //Puts dijkstras result into a hashmap
             }
+            System.out.println("Dijkstras has run and updated the LSDB table");
+            printMatrix();
         }
     }
 
@@ -61,24 +53,16 @@ public class LSDB {
         return optimalRoute.get(sourceRouter);
     }
 
-    //DijkstrasAlgorithm dijkstrasAlgorithm = new DijkstrasAlgorithm(adjacencyMatrix, 1);
-
-    //Delete this function
-    public void increaseX() {
-        x++;
-        System.out.println("X is " + x);
-    }
-
-    public void runDijkstras(int routerID) {
-        dijkstrasAlgorithm = new DijkstrasAlgorithm(routingMatrix, routerID);
-    }
-
     public void printMatrix() {
         System.out.println(Arrays.deepToString(routingMatrix)
                 .replace("],","\n").replace(",","\t| ")
                 .replaceAll("[\\[\\]]", " "));
     }
-    
+
+
+    /*
+        This function is saved for future use
+     */
 	public void cleanMatrix() {
     	for( int i = 0; i < routingMatrix.length; i++ )
     		   Arrays.fill(routingMatrix[i], 0);

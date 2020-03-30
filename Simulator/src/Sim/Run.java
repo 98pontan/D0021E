@@ -8,11 +8,11 @@ public class Run {
 	public static void main (String [] args)
 	{
 		// Creates two links
-		Link link1 = new WeightedLink(30);
-		Link link2 = new WeightedLink(10);
-		Link link3 = new WeightedLink(30);
-		Link link4 = new WeightedLink(100);
-		Link link5 = new WeightedLink(100);
+		Link link1 = new WeightedLink(30, 1);
+		Link link2 = new WeightedLink(10, 2);
+		Link link3 = new WeightedLink(30, 3);
+		Link link4 = new WeightedLink(100, 4);
+		Link link5 = new WeightedLink(100, 5);
 		//TESTING LSDB
 		LSDB lsdb = new LSDB(3, 2);
 
@@ -53,13 +53,16 @@ public class Run {
 		routeNode2.printInterfaces();
 
 		routeNode.sendLSA();
-		routeNode1.sendLSA();
-		routeNode2.sendLSA();
+		//routeNode1.sendLSA();
+		//routeNode2.sendLSA();
+
+		link4.send(link4, new changeWeight(5), 20);
+		link5.send(link5, new changeWeight(10), 24);
 
 		// Generate some traffic
 		//host1.moveInterfaceAfter(3, 2, 0);
 		//host1.StartSending(2, 1, 6, 6, 1);
-		host1.StartSending(2, 1, 1, 6, 1);
+		host1.StartSending(2, 1, 8, 6, 1);
 		//host2.StartSending(1, 1, 1, 6, 1);
 	//	host2.changeRouterAfter(3, routeNode1, routeNode);
 		

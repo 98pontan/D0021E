@@ -2,6 +2,10 @@ package Sim;
 
 import java.util.ArrayList;
 
+/*
+    Algorithm is from https://www.geeksforgeeks.org/printing-paths-dijkstras-shortest-path-algorithm/ and is slightly modified by us.
+ */
+
 public class DijkstrasAlgorithm {
 
     private final int NO_PARENT = -1;
